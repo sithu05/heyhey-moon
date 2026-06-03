@@ -1,8 +1,9 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRightIcon, MoreVerticalIcon } from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon, MoreVerticalIcon } from "lucide-react";
 
 import { cn } from "@repo/ui/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar";
@@ -33,7 +34,6 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-  SidebarTrigger,
   useSidebar,
 } from "@repo/ui/components/ui/sidebar";
 
@@ -99,21 +99,38 @@ function MenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
 
 export function AppSidebar() {
   const pathname = usePathname();
-  const { state } = useSidebar();
+  const { state, isMobile, toggleSidebar } = useSidebar();
+  const collapsed = state === "collapsed" && !isMobile;
 
   return (
     <Sidebar collapsible="icon">
-      <SidebarHeader>
-        <div className="flex items-center justify-between gap-2 px-1 py-1">
-          <Link href="/" className="flex items-center gap-2 overflow-hidden">
-            <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-              <span className="size-3 rounded-full border-[3px] border-current border-r-transparent" />
-            </span>
-            <span className="text-lg font-semibold tracking-tight group-data-[collapsible=icon]:hidden">
-              Zello
-            </span>
-          </Link>
-          <SidebarTrigger className="text-muted-foreground group-data-[collapsible=icon]:hidden" />
+      <SidebarHeader className="border-b border-sidebar-border p-6 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:py-5">
+        <div className="flex items-center justify-between gap-2 group-data-[collapsible=icon]:justify-center">
+          {collapsed ? (
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              aria-label="Expand sidebar"
+              className="flex items-center"
+            >
+              <Image src="/logo-icon.svg" alt="Zello" width={34} height={34} priority />
+            </button>
+          ) : (
+            <Link href="/" className="flex items-center gap-2 overflow-hidden">
+              <Image src="/logo-icon.svg" alt="Zello" width={34} height={34} priority />
+              <span className="text-lg font-semibold tracking-tight">Zello</span>
+            </Link>
+          )}
+          {!collapsed && (
+            <button
+              type="button"
+              onClick={toggleSidebar}
+              aria-label="Collapse sidebar"
+              className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors hover:bg-muted/80"
+            >
+              <ChevronLeftIcon className="size-4" />
+            </button>
+          )}
         </div>
       </SidebarHeader>
 

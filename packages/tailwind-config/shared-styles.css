@@ -75,7 +75,7 @@
   --sidebar-active: oklch(0.941 0.025 311.7); /* #F1E7F8 */
   --sidebar-active-foreground: oklch(0.558 0.288 302.321);
   --sidebar-menu-radius: 0.75rem;
-  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-border: oklch(0.936 0 0); /* #E9EAEA */
   --sidebar-ring: oklch(0.52 0.255 293);
 }
 

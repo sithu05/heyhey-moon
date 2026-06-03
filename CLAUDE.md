@@ -8,11 +8,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 # Install dependencies
 pnpm install
 
-# Development (all apps)
-pnpm dev
+# Development (all apps) — ALWAYS run from the repo root, not inside an app.
+# Apps depend on internal workspace packages that Turborepo must build/wire first,
+# so use `pnpm run dev` here (not `next dev` inside apps/admin-portal).
+pnpm run dev
 
-# Build all packages and apps
-pnpm build
+# Build all packages and apps — ALWAYS run from the repo root, not inside an app,
+# for the same internal-package reason. Use `pnpm run build` (not `next build`).
+pnpm run build
 
 # Lint all
 pnpm lint
@@ -90,3 +93,6 @@ Components in `packages/ui/src/components/ui/` follow the shadcn pattern: CVA va
 - Root `vitest.config.ts` runs workspace-wide tests as two projects: `packages/` (Node env) and `apps/` (jsdom env).
 - Each package/app can also run its own `vitest run` directly.
 - Coverage is collected as `coverage.json` per package and merged via `nyc` in `packages/vitest-config`.
+
+## Git conventions
+- Do **not** add a `Co-Authored-By` trailer to git commit messages.
