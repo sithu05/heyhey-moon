@@ -37,7 +37,7 @@ function SheetOverlay({
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
       className={cn(
-        "ui-fixed ui-inset-0 ui-z-50 ui-bg-black/10 ui-duration-100 supports-backdrop-filter:ui-backdrop-blur-xs data-open:ui-animate-in data-open:ui-fade-in-0 data-closed:ui-animate-out data-closed:ui-fade-out-0",
+        "ui:fixed ui:inset-0 ui:z-50 ui:bg-black/10 ui:duration-100 ui:supports-backdrop-filter:backdrop-blur-xs ui:data-open:animate-in ui:data-open:fade-in-0 ui:data-closed:animate-out ui:data-closed:fade-out-0",
         className,
       )}
       {...props}
@@ -62,7 +62,7 @@ function SheetContent({
         data-slot="sheet-content"
         data-side={side}
         className={cn(
-          "ui-fixed ui-z-50 ui-flex ui-flex-col ui-gap-4 ui-bg-popover ui-bg-clip-padding ui-text-sm ui-text-popover-foreground ui-shadow-lg ui-transition ui-duration-200 ui-ease-in-out data-[side=bottom]:ui-inset-x-0 data-[side=bottom]:ui-bottom-0 data-[side=bottom]:ui-h-auto data-[side=bottom]:ui-border-t data-[side=left]:ui-inset-y-0 data-[side=left]:ui-left-0 data-[side=left]:ui-h-full data-[side=left]:ui-w-3/4 data-[side=left]:ui-border-r data-[side=right]:ui-inset-y-0 data-[side=right]:ui-right-0 data-[side=right]:ui-h-full data-[side=right]:ui-w-3/4 data-[side=right]:ui-border-l data-[side=top]:ui-inset-x-0 data-[side=top]:ui-top-0 data-[side=top]:ui-h-auto data-[side=top]:ui-border-b data-[side=left]:sm:ui-max-w-sm data-[side=right]:sm:ui-max-w-sm data-open:ui-animate-in data-open:ui-fade-in-0 data-[side=bottom]:data-open:ui-slide-in-from-bottom-10 data-[side=left]:data-open:ui-slide-in-from-left-10 data-[side=right]:data-open:ui-slide-in-from-right-10 data-[side=top]:data-open:ui-slide-in-from-top-10 data-closed:ui-animate-out data-closed:ui-fade-out-0 data-[side=bottom]:data-closed:ui-slide-out-to-bottom-10 data-[side=left]:data-closed:ui-slide-out-to-left-10 data-[side=right]:data-closed:ui-slide-out-to-right-10 data-[side=top]:data-closed:ui-slide-out-to-top-10",
+          "ui:fixed ui:z-50 ui:flex ui:flex-col ui:gap-4 ui:bg-popover ui:bg-clip-padding ui:text-sm ui:text-popover-foreground ui:shadow-lg ui:transition ui:duration-200 ui:ease-in-out ui:data-[side=bottom]:inset-x-0 ui:data-[side=bottom]:bottom-0 ui:data-[side=bottom]:h-auto ui:data-[side=bottom]:border-t ui:data-[side=left]:inset-y-0 ui:data-[side=left]:left-0 ui:data-[side=left]:h-full ui:data-[side=left]:w-3/4 ui:data-[side=left]:border-r ui:data-[side=right]:inset-y-0 ui:data-[side=right]:right-0 ui:data-[side=right]:h-full ui:data-[side=right]:w-3/4 ui:data-[side=right]:border-l ui:data-[side=top]:inset-x-0 ui:data-[side=top]:top-0 ui:data-[side=top]:h-auto ui:data-[side=top]:border-b ui:data-[side=left]:sm:max-w-sm ui:data-[side=right]:sm:max-w-sm ui:data-open:animate-in ui:data-open:fade-in-0 ui:data-[side=bottom]:data-open:slide-in-from-bottom-10 ui:data-[side=left]:data-open:slide-in-from-left-10 ui:data-[side=right]:data-open:slide-in-from-right-10 ui:data-[side=top]:data-open:slide-in-from-top-10 ui:data-closed:animate-out ui:data-closed:fade-out-0 ui:data-[side=bottom]:data-closed:slide-out-to-bottom-10 ui:data-[side=left]:data-closed:slide-out-to-left-10 ui:data-[side=right]:data-closed:slide-out-to-right-10 ui:data-[side=top]:data-closed:slide-out-to-top-10",
           className,
         )}
         {...props}
@@ -72,11 +72,11 @@ function SheetContent({
           <SheetPrimitive.Close data-slot="sheet-close" asChild>
             <Button
               variant="ghost"
-              className="ui-absolute ui-top-3 ui-right-3"
+              className="ui:absolute ui:top-3 ui:right-3"
               size="icon-sm"
             >
               <XIcon />
-              <span className="ui-sr-only">Close</span>
+              <span className="ui:sr-only">Close</span>
             </Button>
           </SheetPrimitive.Close>
         )}
@@ -89,7 +89,7 @@ function SheetHeader({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-header"
-      className={cn("ui-flex ui-flex-col ui-gap-0.5 ui-p-4", className)}
+      className={cn("ui:flex ui:flex-col ui:gap-0.5 ui:p-4", className)}
       {...props}
     />
   );
@@ -99,7 +99,7 @@ function SheetFooter({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       data-slot="sheet-footer"
-      className={cn("ui-mt-auto ui-flex ui-flex-col ui-gap-2 ui-p-4", className)}
+      className={cn("ui:mt-auto ui:flex ui:flex-col ui:gap-2 ui:p-4", className)}
       {...props}
     />
   );
@@ -113,7 +113,7 @@ function SheetTitle({
     <SheetPrimitive.Title
       data-slot="sheet-title"
       className={cn(
-        "ui-font-heading ui-text-base ui-font-medium ui-text-foreground",
+        "ui:font-heading ui:text-base ui:font-medium ui:text-foreground",
         className,
       )}
       {...props}
@@ -128,7 +128,7 @@ function SheetDescription({
   return (
     <SheetPrimitive.Description
       data-slot="sheet-description"
-      className={cn("ui-text-sm ui-text-muted-foreground", className)}
+      className={cn("ui:text-sm ui:text-muted-foreground", className)}
       {...props}
     />
   );

@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
-import { Toaster } from "@repo/ui/components/ui/sonner";
+import { Toaster } from "./sonner";
 
 export const metadata: Metadata = {
   title: "Create Turborepo",

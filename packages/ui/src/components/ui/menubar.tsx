@@ -14,7 +14,7 @@ function Menubar({
     <MenubarPrimitive.Root
       data-slot="menubar"
       className={cn(
-        "ui-flex ui-h-8 ui-items-center ui-gap-0.5 ui-rounded-lg ui-border ui-p-[3px]",
+        "ui:flex ui:h-8 ui:items-center ui:gap-0.5 ui:rounded-lg ui:border ui:p-[3px]",
         className,
       )}
       {...props}
@@ -56,7 +56,7 @@ function MenubarTrigger({
     <MenubarPrimitive.Trigger
       data-slot="menubar-trigger"
       className={cn(
-        "ui-flex ui-items-center ui-rounded-sm ui-px-1.5 ui-py-[2px] ui-text-sm ui-font-medium ui-outline-hidden ui-select-none hover:ui-bg-muted aria-expanded:ui-bg-muted",
+        "ui:flex ui:items-center ui:rounded-sm ui:px-1.5 ui:py-[2px] ui:text-sm ui:font-medium ui:outline-hidden ui:select-none ui:hover:bg-muted ui:aria-expanded:bg-muted",
         className,
       )}
       {...props}
@@ -79,7 +79,7 @@ function MenubarContent({
         alignOffset={alignOffset}
         sideOffset={sideOffset}
         className={cn(
-          "ui-z-50 ui-min-w-36 ui-origin-(--radix-menubar-content-transform-origin) ui-overflow-hidden ui-rounded-lg ui-bg-popover ui-p-1 ui-text-popover-foreground ui-shadow-md ui-ring-1 ui-ring-foreground/10 ui-duration-100 data-[side=bottom]:ui-slide-in-from-top-2 data-[side=left]:ui-slide-in-from-right-2 data-[side=right]:ui-slide-in-from-left-2 data-[side=top]:ui-slide-in-from-bottom-2 data-open:ui-animate-in data-open:ui-fade-in-0 data-open:ui-zoom-in-95",
+          "ui:z-50 ui:min-w-36 ui:origin-(--radix-menubar-content-transform-origin) ui:overflow-hidden ui:rounded-lg ui:bg-popover ui:p-1 ui:text-popover-foreground ui:shadow-md ui:ring-1 ui:ring-foreground/10 ui:duration-100 ui:data-[side=bottom]:slide-in-from-top-2 ui:data-[side=left]:slide-in-from-right-2 ui:data-[side=right]:slide-in-from-left-2 ui:data-[side=top]:slide-in-from-bottom-2 ui:data-open:animate-in ui:data-open:fade-in-0 ui:data-open:zoom-in-95",
           className,
         )}
         {...props}
@@ -103,7 +103,7 @@ function MenubarItem({
       data-inset={inset}
       data-variant={variant}
       className={cn(
-        "ui-group/menubar-item ui-relative ui-flex ui-cursor-default ui-items-center ui-gap-1.5 ui-rounded-md ui-px-1.5 ui-py-1 ui-text-sm ui-outline-hidden ui-select-none focus:ui-bg-accent focus:ui-text-accent-foreground not-data-[variant=destructive]:focus:**:ui-text-accent-foreground data-inset:ui-pl-7 data-[variant=destructive]:ui-text-destructive data-[variant=destructive]:focus:ui-bg-destructive/10 data-[variant=destructive]:focus:ui-text-destructive dark:data-[variant=destructive]:focus:ui-bg-destructive/20 data-disabled:ui-pointer-events-none data-disabled:ui-opacity-50 [&_svg]:ui-pointer-events-none [&_svg]:ui-shrink-0 [&_svg:not([class*='size-'])]:ui-size-4 data-[variant=destructive]:*:[svg]:ui-text-destructive!",
+        "ui:group/menubar-item ui:relative ui:flex ui:cursor-default ui:items-center ui:gap-1.5 ui:rounded-md ui:px-1.5 ui:py-1 ui:text-sm ui:outline-hidden ui:select-none ui:focus:bg-accent ui:focus:text-accent-foreground ui:not-data-[variant=destructive]:focus:**:text-accent-foreground ui:data-inset:pl-7 ui:data-[variant=destructive]:text-destructive ui:data-[variant=destructive]:focus:bg-destructive/10 ui:data-[variant=destructive]:focus:text-destructive ui:dark:data-[variant=destructive]:focus:bg-destructive/20 ui:data-disabled:pointer-events-none ui:data-disabled:opacity-50 ui:[&_svg]:pointer-events-none ui:[&_svg]:shrink-0 ui:[&_svg:not([class*='size-'])]:size-4 ui:data-[variant=destructive]:*:[svg]:text-destructive!",
         className,
       )}
       {...props}
@@ -125,13 +125,13 @@ function MenubarCheckboxItem({
       data-slot="menubar-checkbox-item"
       data-inset={inset}
       className={cn(
-        "ui-relative ui-flex ui-cursor-default ui-items-center ui-gap-1.5 ui-rounded-md ui-py-1 ui-pr-1.5 ui-pl-7 ui-text-sm ui-outline-hidden ui-select-none focus:ui-bg-accent focus:ui-text-accent-foreground focus:**:ui-text-accent-foreground data-inset:ui-pl-7 data-disabled:ui-pointer-events-none [&_svg]:ui-pointer-events-none [&_svg]:ui-shrink-0",
+        "ui:relative ui:flex ui:cursor-default ui:items-center ui:gap-1.5 ui:rounded-md ui:py-1 ui:pr-1.5 ui:pl-7 ui:text-sm ui:outline-hidden ui:select-none ui:focus:bg-accent ui:focus:text-accent-foreground ui:focus:**:text-accent-foreground ui:data-inset:pl-7 ui:data-disabled:pointer-events-none ui:[&_svg]:pointer-events-none ui:[&_svg]:shrink-0",
         className,
       )}
       checked={checked}
       {...props}
     >
-      <span className="ui-pointer-events-none ui-absolute ui-left-1.5 ui-flex ui-size-4 ui-items-center ui-justify-center [&_svg:not([class*='size-'])]:ui-size-4">
+      <span className="ui:pointer-events-none ui:absolute ui:left-1.5 ui:flex ui:size-4 ui:items-center ui:justify-center ui:[&_svg:not([class*='size-'])]:size-4">
         <MenubarPrimitive.ItemIndicator>
           <CheckIcon />
         </MenubarPrimitive.ItemIndicator>
@@ -154,12 +154,12 @@ function MenubarRadioItem({
       data-slot="menubar-radio-item"
       data-inset={inset}
       className={cn(
-        "ui-relative ui-flex ui-cursor-default ui-items-center ui-gap-1.5 ui-rounded-md ui-py-1 ui-pr-1.5 ui-pl-7 ui-text-sm ui-outline-hidden ui-select-none focus:ui-bg-accent focus:ui-text-accent-foreground focus:**:ui-text-accent-foreground data-inset:ui-pl-7 data-disabled:ui-pointer-events-none data-disabled:ui-opacity-50 [&_svg]:ui-pointer-events-none [&_svg]:ui-shrink-0 [&_svg:not([class*='size-'])]:ui-size-4",
+        "ui:relative ui:flex ui:cursor-default ui:items-center ui:gap-1.5 ui:rounded-md ui:py-1 ui:pr-1.5 ui:pl-7 ui:text-sm ui:outline-hidden ui:select-none ui:focus:bg-accent ui:focus:text-accent-foreground ui:focus:**:text-accent-foreground ui:data-inset:pl-7 ui:data-disabled:pointer-events-none ui:data-disabled:opacity-50 ui:[&_svg]:pointer-events-none ui:[&_svg]:shrink-0 ui:[&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
     >
-      <span className="ui-pointer-events-none ui-absolute ui-left-1.5 ui-flex ui-size-4 ui-items-center ui-justify-center [&_svg:not([class*='size-'])]:ui-size-4">
+      <span className="ui:pointer-events-none ui:absolute ui:left-1.5 ui:flex ui:size-4 ui:items-center ui:justify-center ui:[&_svg:not([class*='size-'])]:size-4">
         <MenubarPrimitive.ItemIndicator>
           <CheckIcon />
         </MenubarPrimitive.ItemIndicator>
@@ -181,7 +181,7 @@ function MenubarLabel({
       data-slot="menubar-label"
       data-inset={inset}
       className={cn(
-        "ui-px-1.5 ui-py-1 ui-text-sm ui-font-medium data-inset:ui-pl-7",
+        "ui:px-1.5 ui:py-1 ui:text-sm ui:font-medium ui:data-inset:pl-7",
         className,
       )}
       {...props}
@@ -196,7 +196,7 @@ function MenubarSeparator({
   return (
     <MenubarPrimitive.Separator
       data-slot="menubar-separator"
-      className={cn("-ui-mx-1 ui-my-1 ui-h-px ui-bg-border", className)}
+      className={cn("ui:-mx-1 ui:my-1 ui:h-px ui:bg-border", className)}
       {...props}
     />
   );
@@ -210,7 +210,7 @@ function MenubarShortcut({
     <span
       data-slot="menubar-shortcut"
       className={cn(
-        "ui-ml-auto ui-text-xs ui-tracking-widest ui-text-muted-foreground group-focus/menubar-item:ui-text-accent-foreground",
+        "ui:ml-auto ui:text-xs ui:tracking-widest ui:text-muted-foreground ui:group-focus/menubar-item:text-accent-foreground",
         className,
       )}
       {...props}
@@ -237,13 +237,13 @@ function MenubarSubTrigger({
       data-slot="menubar-sub-trigger"
       data-inset={inset}
       className={cn(
-        "ui-flex ui-cursor-default ui-items-center ui-gap-1.5 ui-rounded-md ui-px-1.5 ui-py-1 ui-text-sm ui-outline-none ui-select-none focus:ui-bg-accent focus:ui-text-accent-foreground data-inset:ui-pl-7 data-open:ui-bg-accent data-open:ui-text-accent-foreground [&_svg:not([class*='size-'])]:ui-size-4",
+        "ui:flex ui:cursor-default ui:items-center ui:gap-1.5 ui:rounded-md ui:px-1.5 ui:py-1 ui:text-sm ui:outline-none ui:select-none ui:focus:bg-accent ui:focus:text-accent-foreground ui:data-inset:pl-7 ui:data-open:bg-accent ui:data-open:text-accent-foreground ui:[&_svg:not([class*='size-'])]:size-4",
         className,
       )}
       {...props}
     >
       {children}
-      <ChevronRightIcon className="ui-ml-auto ui-size-4" />
+      <ChevronRightIcon className="ui:ml-auto ui:size-4" />
     </MenubarPrimitive.SubTrigger>
   );
 }
@@ -256,7 +256,7 @@ function MenubarSubContent({
     <MenubarPrimitive.SubContent
       data-slot="menubar-sub-content"
       className={cn(
-        "ui-z-50 ui-min-w-32 ui-origin-(--radix-menubar-content-transform-origin) ui-overflow-hidden ui-rounded-lg ui-bg-popover ui-p-1 ui-text-popover-foreground ui-shadow-lg ui-ring-1 ui-ring-foreground/10 ui-duration-100 data-[side=bottom]:ui-slide-in-from-top-2 data-[side=left]:ui-slide-in-from-right-2 data-[side=right]:ui-slide-in-from-left-2 data-[side=top]:ui-slide-in-from-bottom-2 data-open:ui-animate-in data-open:ui-fade-in-0 data-open:ui-zoom-in-95 data-closed:ui-animate-out data-closed:ui-fade-out-0 data-closed:ui-zoom-out-95",
+        "ui:z-50 ui:min-w-32 ui:origin-(--radix-menubar-content-transform-origin) ui:overflow-hidden ui:rounded-lg ui:bg-popover ui:p-1 ui:text-popover-foreground ui:shadow-lg ui:ring-1 ui:ring-foreground/10 ui:duration-100 ui:data-[side=bottom]:slide-in-from-top-2 ui:data-[side=left]:slide-in-from-right-2 ui:data-[side=right]:slide-in-from-left-2 ui:data-[side=top]:slide-in-from-bottom-2 ui:data-open:animate-in ui:data-open:fade-in-0 ui:data-open:zoom-in-95 ui:data-closed:animate-out ui:data-closed:fade-out-0 ui:data-closed:zoom-out-95",
         className,
       )}
       {...props}

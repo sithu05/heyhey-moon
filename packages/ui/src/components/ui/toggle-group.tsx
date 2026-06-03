@@ -41,7 +41,7 @@ function ToggleGroup({
       data-orientation={orientation}
       style={{ "--gap": spacing } as React.CSSProperties}
       className={cn(
-        "ui-group/toggle-group ui-flex ui-w-fit ui-flex-row ui-items-center ui-gap-[--spacing(var(--gap))] ui-rounded-lg data-[size=sm]:ui-rounded-[min(var(--radius-md),10px)] data-vertical:ui-flex-col data-vertical:ui-items-stretch",
+        "ui:group/toggle-group ui:flex ui:w-fit ui:flex-row ui:items-center ui:gap-[--spacing(var(--gap))] ui:rounded-lg ui:data-[size=sm]:rounded-[min(var(--radius-md),10px)] ui:data-vertical:flex-col ui:data-vertical:items-stretch",
         className,
       )}
       {...props}
@@ -72,7 +72,7 @@ function ToggleGroupItem({
       data-size={context.size || size}
       data-spacing={context.spacing}
       className={cn(
-        "ui-shrink-0 group-data-[spacing=0]/toggle-group:ui-rounded-none group-data-[spacing=0]/toggle-group:ui-px-2 focus:ui-z-10 focus-visible:ui-z-10 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:ui-pr-1.5 group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:ui-pl-1.5 group-data-horizontal/toggle-group:data-[spacing=0]:first:ui-rounded-l-lg group-data-vertical/toggle-group:data-[spacing=0]:first:ui-rounded-t-lg group-data-horizontal/toggle-group:data-[spacing=0]:last:ui-rounded-r-lg group-data-vertical/toggle-group:data-[spacing=0]:last:ui-rounded-b-lg group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:ui-border-l-0 group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:ui-border-t-0 group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:ui-border-l group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:ui-border-t",
+        "ui:shrink-0 ui:group-data-[spacing=0]/toggle-group:rounded-none ui:group-data-[spacing=0]/toggle-group:px-2 ui:focus:z-10 ui:focus-visible:z-10 ui:group-data-[spacing=0]/toggle-group:has-data-[icon=inline-end]:pr-1.5 ui:group-data-[spacing=0]/toggle-group:has-data-[icon=inline-start]:pl-1.5 ui:group-data-horizontal/toggle-group:data-[spacing=0]:first:rounded-l-lg ui:group-data-vertical/toggle-group:data-[spacing=0]:first:rounded-t-lg ui:group-data-horizontal/toggle-group:data-[spacing=0]:last:rounded-r-lg ui:group-data-vertical/toggle-group:data-[spacing=0]:last:rounded-b-lg ui:group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:border-l-0 ui:group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:border-t-0 ui:group-data-horizontal/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-l ui:group-data-vertical/toggle-group:data-[spacing=0]:data-[variant=outline]:first:border-t",
         toggleVariants({
           variant: context.variant || variant,
           size: context.size || size,

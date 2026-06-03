@@ -31,25 +31,25 @@ function Slider({
       min={min}
       max={max}
       className={cn(
-        "ui-relative ui-flex ui-w-full ui-touch-none ui-items-center ui-select-none data-disabled:ui-opacity-50 data-vertical:ui-h-full data-vertical:ui-min-h-40 data-vertical:ui-w-auto data-vertical:ui-flex-col",
+        "ui:relative ui:flex ui:w-full ui:touch-none ui:items-center ui:select-none ui:data-disabled:opacity-50 ui:data-vertical:h-full ui:data-vertical:min-h-40 ui:data-vertical:w-auto ui:data-vertical:flex-col",
         className,
       )}
       {...props}
     >
       <SliderPrimitive.Track
         data-slot="slider-track"
-        className="ui-relative ui-grow ui-overflow-hidden ui-rounded-full ui-bg-muted data-horizontal:ui-h-1 data-horizontal:ui-w-full data-vertical:ui-h-full data-vertical:ui-w-1"
+        className="ui:relative ui:grow ui:overflow-hidden ui:rounded-full ui:bg-muted ui:data-horizontal:h-1 ui:data-horizontal:w-full ui:data-vertical:h-full ui:data-vertical:w-1"
       >
         <SliderPrimitive.Range
           data-slot="slider-range"
-          className="ui-absolute ui-bg-primary ui-select-none data-horizontal:ui-h-full data-vertical:ui-w-full"
+          className="ui:absolute ui:bg-primary ui:select-none ui:data-horizontal:h-full ui:data-vertical:w-full"
         />
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
-          className="ui-relative ui-block ui-size-3 ui-shrink-0 ui-rounded-full ui-border ui-border-ring ui-bg-white ui-ring-ring/50 ui-transition-[color,box-shadow] ui-select-none after:ui-absolute after:-ui-inset-2 hover:ui-ring-3 focus-visible:ui-ring-3 focus-visible:ui-outline-hidden active:ui-ring-3 disabled:ui-pointer-events-none disabled:ui-opacity-50"
+          className="ui:relative ui:block ui:size-3 ui:shrink-0 ui:rounded-full ui:border ui:border-ring ui:bg-white ui:ring-ring/50 ui:transition-[color,box-shadow] ui:select-none ui:after:absolute ui:after:-inset-2 ui:hover:ring-3 ui:focus-visible:ring-3 ui:focus-visible:outline-hidden ui:active:ring-3 ui:disabled:pointer-events-none ui:disabled:opacity-50"
         />
       ))}
     </SliderPrimitive.Root>

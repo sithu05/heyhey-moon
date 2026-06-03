@@ -120,7 +120,7 @@ function Carousel({
     >
       <div
         onKeyDownCapture={handleKeyDown}
-        className={cn("ui-relative", className)}
+        className={cn("ui:relative", className)}
         role="region"
         aria-roledescription="carousel"
         data-slot="carousel"
@@ -138,13 +138,13 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   return (
     <div
       ref={carouselRef}
-      className="ui-overflow-hidden"
+      className="ui:overflow-hidden"
       data-slot="carousel-content"
     >
       <div
         className={cn(
-          "ui-flex",
-          orientation === "horizontal" ? "-ui-ml-4" : "-ui-mt-4 ui-flex-col",
+          "ui:flex",
+          orientation === "horizontal" ? "ui:-ml-4" : "ui:-mt-4 ui:flex-col",
           className,
         )}
         {...props}
@@ -162,8 +162,8 @@ function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
       aria-roledescription="slide"
       data-slot="carousel-item"
       className={cn(
-        "ui-min-w-0 ui-shrink-0 ui-grow-0 ui-basis-full",
-        orientation === "horizontal" ? "ui-pl-4" : "ui-pt-4",
+        "ui:min-w-0 ui:shrink-0 ui:grow-0 ui:basis-full",
+        orientation === "horizontal" ? "ui:pl-4" : "ui:pt-4",
         className,
       )}
       {...props}
@@ -185,10 +185,10 @@ function CarouselPrevious({
       variant={variant}
       size={size}
       className={cn(
-        "ui-absolute ui-touch-manipulation ui-rounded-full",
+        "ui:absolute ui:touch-manipulation ui:rounded-full",
         orientation === "horizontal"
-          ? "ui-top-1/2 -ui-left-12 -ui-translate-y-1/2"
-          : "-ui-top-12 ui-left-1/2 -ui-translate-x-1/2 ui-rotate-90",
+          ? "ui:top-1/2 ui:-left-12 ui:-translate-y-1/2"
+          : "ui:-top-12 ui:left-1/2 ui:-translate-x-1/2 ui:rotate-90",
         className,
       )}
       disabled={!canScrollPrev}
@@ -196,7 +196,7 @@ function CarouselPrevious({
       {...props}
     >
       <ChevronLeftIcon />
-      <span className="ui-sr-only">Previous slide</span>
+      <span className="ui:sr-only">Previous slide</span>
     </Button>
   );
 }
@@ -215,10 +215,10 @@ function CarouselNext({
       variant={variant}
       size={size}
       className={cn(
-        "ui-absolute ui-touch-manipulation ui-rounded-full",
+        "ui:absolute ui:touch-manipulation ui:rounded-full",
         orientation === "horizontal"
-          ? "ui-top-1/2 -ui-right-12 -ui-translate-y-1/2"
-          : "-ui-bottom-12 ui-left-1/2 -ui-translate-x-1/2 ui-rotate-90",
+          ? "ui:top-1/2 ui:-right-12 ui:-translate-y-1/2"
+          : "ui:-bottom-12 ui:left-1/2 ui:-translate-x-1/2 ui:rotate-90",
         className,
       )}
       disabled={!canScrollNext}
@@ -226,7 +226,7 @@ function CarouselNext({
       {...props}
     >
       <ChevronRightIcon />
-      <span className="ui-sr-only">Next slide</span>
+      <span className="ui:sr-only">Next slide</span>
     </Button>
   );
 }

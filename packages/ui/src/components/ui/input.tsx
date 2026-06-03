@@ -8,7 +8,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
       type={type}
       data-slot="input"
       className={cn(
-        "ui-h-8 ui-w-full ui-min-w-0 ui-rounded-lg ui-border ui-border-input ui-bg-transparent ui-px-2.5 ui-py-1 ui-text-base ui-transition-colors ui-outline-none file:ui-inline-flex file:ui-h-6 file:ui-border-0 file:ui-bg-transparent file:ui-text-sm file:ui-font-medium file:ui-text-foreground placeholder:ui-text-muted-foreground focus-visible:ui-border-ring focus-visible:ui-ring-3 focus-visible:ui-ring-ring/50 disabled:ui-pointer-events-none disabled:ui-cursor-not-allowed disabled:ui-bg-input/50 disabled:ui-opacity-50 aria-invalid:ui-border-destructive aria-invalid:ui-ring-3 aria-invalid:ui-ring-destructive/20 md:ui-text-sm dark:ui-bg-input/30 dark:disabled:ui-bg-input/80 dark:aria-invalid:ui-border-destructive/50 dark:aria-invalid:ui-ring-destructive/40",
+        "ui:h-8 ui:w-full ui:min-w-0 ui:rounded-lg ui:border ui:border-input ui:bg-transparent ui:px-2.5 ui:py-1 ui:text-base ui:transition-colors ui:outline-none ui:file:inline-flex ui:file:h-6 ui:file:border-0 ui:file:bg-transparent ui:file:text-sm ui:file:font-medium ui:file:text-foreground ui:placeholder:text-muted-foreground ui:focus-visible:border-ring ui:focus-visible:ring-3 ui:focus-visible:ring-ring/50 ui:disabled:pointer-events-none ui:disabled:cursor-not-allowed ui:disabled:bg-input/50 ui:disabled:opacity-50 ui:aria-invalid:border-destructive ui:aria-invalid:ring-3 ui:aria-invalid:ring-destructive/20 ui:md:text-sm ui:dark:bg-input/30 ui:dark:disabled:bg-input/80 ui:dark:aria-invalid:border-destructive/50 ui:dark:aria-invalid:ring-destructive/40",
         className,
       )}
       {...props}

@@ -42,13 +42,13 @@ function TooltipContent({
         data-slot="tooltip-content"
         sideOffset={sideOffset}
         className={cn(
-          "ui-z-50 ui-inline-flex ui-w-fit ui-max-w-xs ui-origin-(--radix-tooltip-content-transform-origin) ui-items-center ui-gap-1.5 ui-rounded-md ui-bg-foreground ui-px-3 ui-py-1.5 ui-text-xs ui-text-background has-data-[slot=kbd]:ui-pr-1.5 data-[side=bottom]:ui-slide-in-from-top-2 data-[side=left]:ui-slide-in-from-right-2 data-[side=right]:ui-slide-in-from-left-2 data-[side=top]:ui-slide-in-from-bottom-2 **:data-[slot=kbd]:ui-relative **:data-[slot=kbd]:ui-isolate **:data-[slot=kbd]:ui-z-50 **:data-[slot=kbd]:ui-rounded-sm data-[state=delayed-open]:ui-animate-in data-[state=delayed-open]:ui-fade-in-0 data-[state=delayed-open]:ui-zoom-in-95 data-open:ui-animate-in data-open:ui-fade-in-0 data-open:ui-zoom-in-95 data-closed:ui-animate-out data-closed:ui-fade-out-0 data-closed:ui-zoom-out-95",
+          "ui:z-50 ui:inline-flex ui:w-fit ui:max-w-xs ui:origin-(--radix-tooltip-content-transform-origin) ui:items-center ui:gap-1.5 ui:rounded-md ui:bg-foreground ui:px-3 ui:py-1.5 ui:text-xs ui:text-background ui:has-data-[slot=kbd]:pr-1.5 ui:data-[side=bottom]:slide-in-from-top-2 ui:data-[side=left]:slide-in-from-right-2 ui:data-[side=right]:slide-in-from-left-2 ui:data-[side=top]:slide-in-from-bottom-2 ui:**:data-[slot=kbd]:relative ui:**:data-[slot=kbd]:isolate ui:**:data-[slot=kbd]:z-50 ui:**:data-[slot=kbd]:rounded-sm ui:data-[state=delayed-open]:animate-in ui:data-[state=delayed-open]:fade-in-0 ui:data-[state=delayed-open]:zoom-in-95 ui:data-open:animate-in ui:data-open:fade-in-0 ui:data-open:zoom-in-95 ui:data-closed:animate-out ui:data-closed:fade-out-0 ui:data-closed:zoom-out-95",
           className,
         )}
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="ui-z-50 ui-size-2.5 ui-translate-y-[calc(-50%_-_2px)] ui-rotate-45 ui-rounded-[2px] ui-bg-foreground ui-fill-foreground" />
+        <TooltipPrimitive.Arrow className="ui:z-50 ui:size-2.5 ui:translate-y-[calc(-50%_-_2px)] ui:rotate-45 ui:rounded-[2px] ui:bg-foreground ui:fill-foreground" />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

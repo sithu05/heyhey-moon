@@ -13,12 +13,12 @@ function ScrollArea({
   return (
     <ScrollAreaPrimitive.Root
       data-slot="scroll-area"
-      className={cn("ui-relative", className)}
+      className={cn("ui:relative", className)}
       {...props}
     >
       <ScrollAreaPrimitive.Viewport
         data-slot="scroll-area-viewport"
-        className="ui-size-full ui-rounded-[inherit] ui-transition-[color,box-shadow] ui-outline-none focus-visible:ui-ring-[3px] focus-visible:ui-ring-ring/50 focus-visible:ui-outline-1"
+        className="ui:size-full ui:rounded-[inherit] ui:transition-[color,box-shadow] ui:outline-none ui:focus-visible:ring-[3px] ui:focus-visible:ring-ring/50 ui:focus-visible:outline-1"
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
@@ -39,14 +39,14 @@ function ScrollBar({
       data-orientation={orientation}
       orientation={orientation}
       className={cn(
-        "ui-flex ui-touch-none ui-p-px ui-transition-colors ui-select-none data-horizontal:ui-h-2.5 data-horizontal:ui-flex-col data-horizontal:ui-border-t data-horizontal:ui-border-t-transparent data-vertical:ui-h-full data-vertical:ui-w-2.5 data-vertical:ui-border-l data-vertical:ui-border-l-transparent",
+        "ui:flex ui:touch-none ui:p-px ui:transition-colors ui:select-none ui:data-horizontal:h-2.5 ui:data-horizontal:flex-col ui:data-horizontal:border-t ui:data-horizontal:border-t-transparent ui:data-vertical:h-full ui:data-vertical:w-2.5 ui:data-vertical:border-l ui:data-vertical:border-l-transparent",
         className,
       )}
       {...props}
     >
       <ScrollAreaPrimitive.ScrollAreaThumb
         data-slot="scroll-area-thumb"
-        className="ui-relative ui-flex-1 ui-rounded-full ui-bg-border"
+        className="ui:relative ui:flex-1 ui:rounded-full ui:bg-border"
       />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
   );

@@ -15,7 +15,7 @@ function NativeSelect({
   return (
     <div
       className={cn(
-        "ui-group/native-select ui-relative ui-w-fit has-[select:disabled]:ui-opacity-50",
+        "ui:group/native-select ui:relative ui:w-fit ui:has-[select:disabled]:opacity-50",
         className,
       )}
       data-slot="native-select-wrapper"
@@ -24,11 +24,11 @@ function NativeSelect({
       <select
         data-slot="native-select"
         data-size={size}
-        className="ui-h-8 ui-w-full ui-min-w-0 ui-appearance-none ui-rounded-lg ui-border ui-border-input ui-bg-transparent ui-py-1 ui-pr-8 ui-pl-2.5 ui-text-sm ui-transition-colors ui-outline-none ui-select-none selection:ui-bg-primary selection:ui-text-primary-foreground placeholder:ui-text-muted-foreground focus-visible:ui-border-ring focus-visible:ui-ring-3 focus-visible:ui-ring-ring/50 disabled:ui-pointer-events-none disabled:ui-cursor-not-allowed aria-invalid:ui-border-destructive aria-invalid:ui-ring-3 aria-invalid:ui-ring-destructive/20 data-[size=sm]:ui-h-7 data-[size=sm]:ui-rounded-[min(var(--radius-md),10px)] data-[size=sm]:ui-py-0.5 dark:ui-bg-input/30 dark:hover:ui-bg-input/50 dark:aria-invalid:ui-border-destructive/50 dark:aria-invalid:ui-ring-destructive/40"
+        className="ui:h-8 ui:w-full ui:min-w-0 ui:appearance-none ui:rounded-lg ui:border ui:border-input ui:bg-transparent ui:py-1 ui:pr-8 ui:pl-2.5 ui:text-sm ui:transition-colors ui:outline-none ui:select-none ui:selection:bg-primary ui:selection:text-primary-foreground ui:placeholder:text-muted-foreground ui:focus-visible:border-ring ui:focus-visible:ring-3 ui:focus-visible:ring-ring/50 ui:disabled:pointer-events-none ui:disabled:cursor-not-allowed ui:aria-invalid:border-destructive ui:aria-invalid:ring-3 ui:aria-invalid:ring-destructive/20 ui:data-[size=sm]:h-7 ui:data-[size=sm]:rounded-[min(var(--radius-md),10px)] ui:data-[size=sm]:py-0.5 ui:dark:bg-input/30 ui:dark:hover:bg-input/50 ui:dark:aria-invalid:border-destructive/50 ui:dark:aria-invalid:ring-destructive/40"
         {...props}
       />
       <ChevronDownIcon
-        className="ui-pointer-events-none ui-absolute ui-top-1/2 ui-right-2.5 ui-size-4 -ui-translate-y-1/2 ui-text-muted-foreground ui-select-none"
+        className="ui:pointer-events-none ui:absolute ui:top-1/2 ui:right-2.5 ui:size-4 ui:-translate-y-1/2 ui:text-muted-foreground ui:select-none"
         aria-hidden="true"
         data-slot="native-select-icon"
       />
@@ -43,7 +43,7 @@ function NativeSelectOption({
   return (
     <option
       data-slot="native-select-option"
-      className={cn("ui-bg-[Canvas] ui-text-[CanvasText]", className)}
+      className={cn("ui:bg-[Canvas] ui:text-[CanvasText]", className)}
       {...props}
     />
   );
@@ -56,7 +56,7 @@ function NativeSelectOptGroup({
   return (
     <optgroup
       data-slot="native-select-optgroup"
-      className={cn("ui-bg-[Canvas] ui-text-[CanvasText]", className)}
+      className={cn("ui:bg-[Canvas] ui:text-[CanvasText]", className)}
       {...props}
     />
   );

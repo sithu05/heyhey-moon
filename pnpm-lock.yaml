@@ -32,9 +32,15 @@ importers:
       geist:
         specifier: ^1.7.1
         version: 1.7.1(next@16.2.0(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
+      lucide-react:
+        specifier: ^1.17.0
+        version: 1.17.0(react@19.2.0)
       next:
         specifier: 16.2.0
         version: 16.2.0(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
+      next-themes:
+        specifier: ^0.4.6
+        version: 0.4.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       react:
         specifier: ^19.2.0
         version: 19.2.0
@@ -44,73 +50,6 @@ importers:
       sonner:
         specifier: ^2.0.7
         version: 2.0.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-    devDependencies:
-      '@next/eslint-plugin-next':
-        specifier: ^16.2.0
-        version: 16.2.0
-      '@repo/eslint-config':
-        specifier: workspace:*
-        version: link:../../packages/eslint-config
-      '@repo/tailwind-config':
-        specifier: workspace:*
-        version: link:../../packages/tailwind-config
-      '@repo/typescript-config':
-        specifier: workspace:*
-        version: link:../../packages/typescript-config
-      '@repo/vitest-config':
-        specifier: workspace:*
-        version: link:../../packages/vitest-config
-      '@tailwindcss/postcss':
-        specifier: ^4.1.5
-        version: 4.1.16
-      '@types/node':
-        specifier: ^22.15.30
-        version: 22.18.12
-      '@types/react':
-        specifier: ^19.1.0
-        version: 19.2.2
-      '@types/react-dom':
-        specifier: ^19.1.1
-        version: 19.2.2(@types/react@19.2.2)
-      '@vitest/coverage-istanbul':
-        specifier: ^4.1.8
-        version: 4.1.8(vitest@4.1.8)
-      autoprefixer:
-        specifier: ^10.4.20
-        version: 10.4.21(postcss@8.5.15)
-      eslint:
-        specifier: ^9.39.1
-        version: 9.39.1(jiti@2.6.1)
-      postcss:
-        specifier: ^8.5.3
-        version: 8.5.15
-      tailwindcss:
-        specifier: ^4.1.5
-        version: 4.1.16
-      typescript:
-        specifier: 5.9.2
-        version: 5.9.2
-      vitest:
-        specifier: ^4.1.8
-        version: 4.1.8(@types/node@22.18.12)(@vitest/coverage-istanbul@4.1.8)(@vitest/ui@4.1.8)(jsdom@29.1.1(@noble/hashes@1.8.0))(msw@2.14.6(@types/node@22.18.12)(typescript@5.9.2))(vite@8.0.16(@types/node@22.18.12)(jiti@2.6.1))
-
-  apps/adminportal:
-    dependencies:
-      '@repo/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      geist:
-        specifier: ^1.7.1
-        version: 1.7.1(next@16.2.0(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0))
-      next:
-        specifier: 16.2.0
-        version: 16.2.0(@babel/core@7.29.7)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
-      react:
-        specifier: ^19.2.0
-        version: 19.2.0
-      react-dom:
-        specifier: ^19.1.0
-        version: 19.2.0(react@19.2.0)
     devDependencies:
       '@next/eslint-plugin-next':
         specifier: ^16.2.0
@@ -249,9 +188,6 @@ importers:
       lucide-react:
         specifier: ^1.17.0
         version: 1.17.0(react@19.2.0)
-      next-themes:
-        specifier: ^0.4.6
-        version: 0.4.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       radix-ui:
         specifier: ^1.4.3
         version: 1.4.3(@types/react-dom@19.2.2(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
@@ -270,9 +206,6 @@ importers:
       shadcn:
         specifier: ^4.10.0
         version: 4.10.0(@types/node@22.18.12)(typescript@5.9.2)
-      sonner:
-        specifier: ^2.0.7
-        version: 2.0.7(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       tailwind-merge:
         specifier: ^3.6.0
         version: 3.6.0
