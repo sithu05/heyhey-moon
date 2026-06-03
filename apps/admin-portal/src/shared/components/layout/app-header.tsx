@@ -4,7 +4,6 @@ import { BellIcon, CalendarIcon, MailIcon, PlusIcon, SearchIcon } from "lucide-r
 
 import { Button } from "@repo/ui/components/ui/button";
 import { Input } from "@repo/ui/components/ui/input";
-import { SidebarTrigger } from "@repo/ui/components/ui/sidebar";
 
 function NotificationButton({
   icon: Icon,
@@ -35,8 +34,6 @@ function NotificationButton({
 export function AppHeader() {
   return (
     <header className="sticky top-0 z-10 flex h-16 shrink-0 items-center gap-3 border-b bg-background px-4 md:px-6">
-      <SidebarTrigger className="text-muted-foreground md:hidden" />
-
       <div className="relative w-full max-w-md">
         <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
         <Input

@@ -3,7 +3,12 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronLeftIcon, ChevronRightIcon, MoreVerticalIcon } from "lucide-react";
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  type LucideIcon,
+  MoreVerticalIcon,
+} from "lucide-react";
 
 import { cn } from "@repo/ui/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@repo/ui/components/ui/avatar";
@@ -97,40 +102,72 @@ function MenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
   );
 }
 
+/** Square muted icon button used for the header collapse and footer expand controls. */
+function RailToggleButton({
+  icon: Icon,
+  label,
+  className,
+}: {
+  icon: LucideIcon;
+  label: string;
+  className?: string;
+}) {
+  const { toggleSidebar } = useSidebar();
+  return (
+    <button
+      type="button"
+      onClick={toggleSidebar}
+      aria-label={label}
+      className={cn(
+        "flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors hover:bg-muted/80",
+        className,
+      )}
+    >
+      <Icon className="size-4" />
+    </button>
+  );
+}
+
 export function AppSidebar() {
   const pathname = usePathname();
-  const { state, isMobile, toggleSidebar } = useSidebar();
-  const collapsed = state === "collapsed" && !isMobile;
+  const { state, openMobile, isMobile } = useSidebar();
+  // Desktop: open/collapsed from `state`. Mobile: from `openMobile` (defaults false ⇒
+  // the rail starts collapsed) so the footer button can expand it.
+  //
+  // NOTE: `isMobile` is false during SSR/first paint then flips after mount, so a phone
+  // briefly renders the expanded rail before snapping to the icon width (a one-frame flash).
+  // Fixing it fully would require breakpoint info at SSR or changes to the shared primitive
+  // (which we keep generic), so we accept it as a minor cosmetic tradeoff.
+  const collapsed = isMobile ? !openMobile : state === "collapsed";
 
   return (
-    <Sidebar collapsible="icon">
+    // Built on the stock `collapsible="none"` variant (sidebar-09 pattern): we drive the
+    // icon-collapse ourselves. This depends on `@repo/ui` internals — the `none` branch
+    // spreading `{...props}` (so `data-collapsible` lands) and the prefixed sub-component
+    // rules keying off the literal `ui:group` marker. `group` powers our own app-level
+    // group-data variants; the `!` width override beats the branch's hardcoded width.
+    // If those internals change, the collapse styling breaks silently (no type error).
+    <Sidebar
+      collapsible="none"
+      data-collapsible={collapsed ? "icon" : ""}
+      className={cn(
+        "group ui:group h-svh border-r border-sidebar-border transition-[width] duration-200 ease-linear",
+        collapsed ? "w-(--sidebar-width-icon)!" : "w-(--sidebar-width)",
+      )}
+    >
       <SidebarHeader className="border-b border-sidebar-border p-6 group-data-[collapsible=icon]:px-0 group-data-[collapsible=icon]:py-5">
         <div className="flex items-center justify-between gap-2 group-data-[collapsible=icon]:justify-center">
-          {collapsed ? (
-            <button
-              type="button"
-              onClick={toggleSidebar}
-              aria-label="Expand sidebar"
-              className="flex items-center"
-            >
-              <Image src="/logo-icon.svg" alt="Zello" width={34} height={34} priority />
-            </button>
-          ) : (
-            <Link href="/" className="flex items-center gap-2 overflow-hidden">
-              <Image src="/logo-icon.svg" alt="Zello" width={34} height={34} priority />
-              <span className="text-lg font-semibold tracking-tight">Zello</span>
-            </Link>
-          )}
-          {!collapsed && (
-            <button
-              type="button"
-              onClick={toggleSidebar}
-              aria-label="Collapse sidebar"
-              className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground transition-colors hover:bg-muted/80"
-            >
-              <ChevronLeftIcon className="size-4" />
-            </button>
-          )}
+          <Link href="/" className="flex items-center gap-2 overflow-hidden">
+            <Image src="/logo-icon.svg" alt="Zello" width={34} height={34} priority />
+            <span className="text-lg font-semibold tracking-tight group-data-[collapsible=icon]:hidden">
+              Zello
+            </span>
+          </Link>
+          <RailToggleButton
+            icon={ChevronLeftIcon}
+            label="Collapse sidebar"
+            className="group-data-[collapsible=icon]:hidden"
+          />
         </div>
       </SidebarHeader>
 
@@ -172,14 +209,19 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter>
+      <SidebarFooter className="group-data-[collapsible=icon]:border-t group-data-[collapsible=icon]:border-sidebar-border">
+        <RailToggleButton
+          icon={ChevronRightIcon}
+          label="Expand sidebar"
+          className="mx-auto hidden group-data-[collapsible=icon]:flex"
+        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <button
               type="button"
               className={cn(
                 "flex w-full items-center gap-2 rounded-lg p-1.5 text-left outline-hidden transition-colors hover:bg-sidebar-accent focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-                state === "collapsed" && "justify-center",
+                "group-data-[collapsible=icon]:justify-center",
               )}
             >
               <Avatar className="size-8 rounded-full">
