@@ -34,3 +34,7 @@ yarn-error.log*
 
 # ui
 dist/
+
+# Testing
+coverage
+coverage.json

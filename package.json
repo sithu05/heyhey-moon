@@ -1,20 +1,26 @@
 {
-  "name": "with-tailwind",
+  "name": "heyhey-memo",
   "private": true,
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "check-types": "turbo run check-types",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo run test",
+    "test:projects": "vitest run",
+    "test:projects:watch": "vitest --watch",
+    "view-report": "turbo run view-report"
   },
   "devDependencies": {
     "prettier": "^3.6.0",
     "prettier-plugin-tailwindcss": "^0.7.1",
-    "turbo": "^2.9.16"
+    "turbo": "^2.9.16",
+    "vitest": "^4.1.8",
+    "@repo/vitest-config": "workspace:*"
   },
   "packageManager": "pnpm@10.19.0",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   }
 }
