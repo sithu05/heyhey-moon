@@ -62,7 +62,7 @@ function MenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
               <ChevronRightIcon className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
             </SidebarMenuButton>
           </CollapsibleTrigger>
-          <CollapsibleContent>
+          <CollapsibleContent className="group-data-[collapsible=icon]:hidden">
             <SidebarMenuSub>
               {item.items.map((sub) => (
                 <SidebarMenuSubItem key={sub.href}>
