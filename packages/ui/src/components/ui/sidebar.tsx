@@ -462,7 +462,7 @@ function SidebarMenuItem({ className, ...props }: React.ComponentProps<"li">) {
 }
 
 const sidebarMenuButtonVariants = cva(
-  "ui:peer/menu-button ui:group/menu-button ui:flex ui:w-full ui:items-center ui:gap-2 ui:overflow-hidden ui:rounded-md ui:p-2 ui:text-left ui:text-sm ui:ring-sidebar-ring ui:outline-hidden ui:transition-[width,height,padding] ui:group-has-data-[sidebar=menu-action]/menu-item:pr-8 ui:group-data-[collapsible=icon]:size-8! ui:group-data-[collapsible=icon]:p-2! ui:hover:bg-sidebar-accent ui:hover:text-sidebar-accent-foreground ui:focus-visible:ring-2 ui:active:bg-sidebar-accent ui:active:text-sidebar-accent-foreground ui:disabled:pointer-events-none ui:disabled:opacity-50 ui:aria-disabled:pointer-events-none ui:aria-disabled:opacity-50 ui:data-open:hover:bg-sidebar-accent ui:data-open:hover:text-sidebar-accent-foreground ui:data-active:bg-sidebar-accent ui:data-active:font-medium ui:data-active:text-sidebar-accent-foreground ui:[&_svg]:size-4 ui:[&_svg]:shrink-0 ui:[&>span:last-child]:truncate",
+  "ui:peer/menu-button ui:group/menu-button ui:flex ui:w-full ui:items-center ui:gap-2 ui:overflow-hidden ui:rounded-(--sidebar-menu-radius) ui:px-[10px] ui:py-2 ui:text-left ui:text-sm ui:ring-sidebar-ring ui:outline-hidden ui:transition-[width,height,padding] ui:group-has-data-[sidebar=menu-action]/menu-item:pr-8 ui:group-data-[collapsible=icon]:size-8! ui:group-data-[collapsible=icon]:p-2! ui:hover:bg-sidebar-accent ui:hover:text-sidebar-accent-foreground ui:focus-visible:ring-2 ui:active:bg-sidebar-accent ui:active:text-sidebar-accent-foreground ui:disabled:pointer-events-none ui:disabled:opacity-50 ui:aria-disabled:pointer-events-none ui:aria-disabled:opacity-50 ui:data-open:hover:bg-sidebar-accent ui:data-open:hover:text-sidebar-accent-foreground ui:data-active:bg-sidebar-active ui:data-active:font-bold ui:data-active:text-sidebar-active-foreground ui:data-active:hover:bg-sidebar-active ui:data-active:hover:text-sidebar-active-foreground ui:[&_svg]:size-4 ui:[&_svg]:shrink-0 ui:[&>span:last-child]:truncate",
   {
     variants: {
       variant: {
@@ -471,7 +471,7 @@ const sidebarMenuButtonVariants = cva(
           "ui:bg-background ui:shadow-[0_0_0_1px_var(--sidebar-border)] ui:hover:bg-sidebar-accent ui:hover:text-sidebar-accent-foreground ui:hover:shadow-[0_0_0_1px_var(--sidebar-accent)]",
       },
       size: {
-        default: "ui:h-8 ui:text-sm",
+        default: "ui:h-10 ui:text-sm",
         sm: "ui:h-7 ui:text-xs",
         lg: "ui:h-12 ui:text-sm ui:group-data-[collapsible=icon]:p-0!",
       },

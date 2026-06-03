@@ -39,10 +39,6 @@ import {
 
 import { favorites, mainMenu, type NavItem } from "./nav";
 
-/** Active styling for the violet "pill" used on the current route. */
-const activePill =
-  "data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-medium";
-
 function isItemActive(pathname: string, item: NavItem) {
   if (item.href === "/") return pathname === "/";
   return pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -60,7 +56,6 @@ function MenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
             <SidebarMenuButton
               isActive={active}
               tooltip={item.label}
-              className={activePill}
             >
               <Icon />
               <span>{item.label}</span>
@@ -74,7 +69,6 @@ function MenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
                   <SidebarMenuSubButton
                     asChild
                     isActive={pathname === sub.href}
-                    className="data-[active=true]:bg-primary/10 data-[active=true]:text-primary data-[active=true]:font-medium"
                   >
                     <Link href={sub.href}>{sub.label}</Link>
                   </SidebarMenuSubButton>
@@ -93,7 +87,6 @@ function MenuItem({ item, pathname }: { item: NavItem; pathname: string }) {
         asChild
         isActive={active}
         tooltip={item.label}
-        className={activePill}
       >
         <Link href={item.href}>
           <Icon />
