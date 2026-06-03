@@ -1,0 +1,6 @@
+@import "tailwindcss" prefix(ui);
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@import "@repo/tailwind-config";
+
+@custom-variant dark (&:is(.dark *));
