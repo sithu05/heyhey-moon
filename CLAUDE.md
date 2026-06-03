@@ -37,14 +37,14 @@ cd packages/math && pnpm test
 pnpm view-report
 ```
 
-The admin portal runs on **port 3000** (`apps/adminportal`).
+The admin portal runs on **port 3000** (`apps/admin-portal`).
 
 ## Architecture
 
 This is a **pnpm + Turborepo monorepo** using TypeScript throughout. Task graph: `build` depends on `^build`, `test` depends on `transit` and `@repo/vitest-config#build`.
 
 ### Apps
-- `apps/adminportal` — Next.js 16 (App Router) admin portal. Runs on port 3000.
+- `apps/admin-portal` — Next.js 16 (App Router) admin portal. Runs on port 3000.
 
 ### App folder structure (slice pattern)
 Apps follow a **feature-slice / domain-oriented** layout. Inside `apps/<app>/`:
