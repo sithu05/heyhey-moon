@@ -1,3 +1,4 @@
+import React from "react";
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/ui/sidebar";
 import { TooltipProvider } from "@repo/ui/components/ui/tooltip";
 
@@ -7,7 +8,14 @@ import { AppSidebar } from "./app-sidebar";
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <TooltipProvider delayDuration={0}>
-      <SidebarProvider>
+      <SidebarProvider
+        style={
+          {
+            "--sidebar-width": "16.5rem",
+            "--sidebar-width-icon": "4.625rem",
+          } as React.CSSProperties
+        }
+      >
         <AppSidebar />
         <SidebarInset>
           <AppHeader />

@@ -2,8 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
-import { AppShell } from "../shared/components/layout";
-import { Toaster } from "./sonner";
+import { AppShell } from "../shared/components/ui/app-shell";
+import { Toaster } from "../shared/components/sonner";
 
 export const metadata: Metadata = {
   title: "Zello Admin",
