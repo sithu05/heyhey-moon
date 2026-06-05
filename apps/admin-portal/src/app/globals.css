@@ -1,7 +1,13 @@
 @import "tailwindcss";
 @import "@repo/tailwind-config";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-@custom-variant dark (&:is(.dark *));
+@source "../../../../packages/ui/src";
+
+@theme {
+  --color-brand: oklch(0.55 0.22 250);
+}
 
 @layer base {
   * {

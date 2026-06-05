@@ -12,7 +12,7 @@ function ResizablePanelGroup({
     <ResizablePrimitive.Group
       data-slot="resizable-panel-group"
       className={cn(
-        "ui:flex ui:h-full ui:w-full ui:aria-[orientation=vertical]:flex-col",
+        "flex h-full w-full aria-[orientation=vertical]:flex-col",
         className,
       )}
       {...props}
@@ -35,13 +35,13 @@ function ResizableHandle({
     <ResizablePrimitive.Separator
       data-slot="resizable-handle"
       className={cn(
-        "ui:relative ui:flex ui:w-px ui:items-center ui:justify-center ui:bg-border ui:ring-offset-background ui:after:absolute ui:after:inset-y-0 ui:after:left-1/2 ui:after:w-1 ui:after:-translate-x-1/2 ui:focus-visible:ring-1 ui:focus-visible:ring-ring ui:focus-visible:outline-hidden ui:aria-[orientation=horizontal]:h-px ui:aria-[orientation=horizontal]:w-full ui:aria-[orientation=horizontal]:after:left-0 ui:aria-[orientation=horizontal]:after:h-1 ui:aria-[orientation=horizontal]:after:w-full ui:aria-[orientation=horizontal]:after:translate-x-0 ui:aria-[orientation=horizontal]:after:-translate-y-1/2 ui:[&[aria-orientation=horizontal]>div]:rotate-90",
+        "relative flex w-px items-center justify-center bg-border ring-offset-background after:absolute after:inset-y-0 after:left-1/2 after:w-1 after:-translate-x-1/2 focus-visible:ring-1 focus-visible:ring-ring focus-visible:outline-hidden aria-[orientation=horizontal]:h-px aria-[orientation=horizontal]:w-full aria-[orientation=horizontal]:after:left-0 aria-[orientation=horizontal]:after:h-1 aria-[orientation=horizontal]:after:w-full aria-[orientation=horizontal]:after:translate-x-0 aria-[orientation=horizontal]:after:-translate-y-1/2 [&[aria-orientation=horizontal]>div]:rotate-90",
         className,
       )}
       {...props}
     >
       {withHandle && (
-        <div className="ui:z-10 ui:flex ui:h-6 ui:w-1 ui:shrink-0 ui:rounded-lg ui:bg-border" />
+        <div className="z-10 flex h-6 w-1 shrink-0 rounded-lg bg-border" />
       )}
     </ResizablePrimitive.Separator>
   );

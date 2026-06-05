@@ -20,7 +20,7 @@ function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
     <ol
       data-slot="breadcrumb-list"
       className={cn(
-        "ui:flex ui:flex-wrap ui:items-center ui:gap-1.5 ui:text-sm ui:wrap-break-word ui:text-muted-foreground",
+        "flex flex-wrap items-center gap-1.5 text-sm wrap-break-word text-muted-foreground",
         className,
       )}
       {...props}
@@ -32,7 +32,7 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
   return (
     <li
       data-slot="breadcrumb-item"
-      className={cn("ui:inline-flex ui:items-center ui:gap-1", className)}
+      className={cn("inline-flex items-center gap-1", className)}
       {...props}
     />
   );
@@ -50,7 +50,7 @@ function BreadcrumbLink({
   return (
     <Comp
       data-slot="breadcrumb-link"
-      className={cn("ui:transition-colors ui:hover:text-foreground", className)}
+      className={cn("transition-colors hover:text-foreground", className)}
       {...props}
     />
   );
@@ -63,7 +63,7 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
       role="link"
       aria-disabled="true"
       aria-current="page"
-      className={cn("ui:font-normal ui:text-foreground", className)}
+      className={cn("font-normal text-foreground", className)}
       {...props}
     />
   );
@@ -79,7 +79,7 @@ function BreadcrumbSeparator({
       data-slot="breadcrumb-separator"
       role="presentation"
       aria-hidden="true"
-      className={cn("ui:[&>svg]:size-3.5", className)}
+      className={cn("[&>svg]:size-3.5", className)}
       {...props}
     >
       {children ?? <ChevronRightIcon />}
@@ -97,13 +97,13 @@ function BreadcrumbEllipsis({
       role="presentation"
       aria-hidden="true"
       className={cn(
-        "ui:flex ui:size-5 ui:items-center ui:justify-center ui:[&>svg]:size-4",
+        "flex size-5 items-center justify-center [&>svg]:size-4",
         className,
       )}
       {...props}
     >
       <MoreHorizontalIcon />
-      <span className="ui:sr-only">More</span>
+      <span className="sr-only">More</span>
     </span>
   );
 }

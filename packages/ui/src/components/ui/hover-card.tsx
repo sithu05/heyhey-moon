@@ -32,7 +32,7 @@ function HoverCardContent({
         align={align}
         sideOffset={sideOffset}
         className={cn(
-          "ui:z-50 ui:w-64 ui:origin-(--radix-hover-card-content-transform-origin) ui:rounded-lg ui:bg-popover ui:p-2.5 ui:text-sm ui:text-popover-foreground ui:shadow-md ui:ring-1 ui:ring-foreground/10 ui:outline-hidden ui:duration-100 ui:data-[side=bottom]:slide-in-from-top-2 ui:data-[side=left]:slide-in-from-right-2 ui:data-[side=right]:slide-in-from-left-2 ui:data-[side=top]:slide-in-from-bottom-2 ui:data-open:animate-in ui:data-open:fade-in-0 ui:data-open:zoom-in-95 ui:data-closed:animate-out ui:data-closed:fade-out-0 ui:data-closed:zoom-out-95",
+          "z-50 w-64 origin-(--radix-hover-card-content-transform-origin) rounded-lg bg-popover p-2.5 text-sm text-popover-foreground shadow-md ring-1 ring-foreground/10 outline-hidden duration-100 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
           className,
         )}
         {...props}
