@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import { memosRouter } from "./features/memos/memos.routes.js";
+import { memosRouter } from "./features/memos/memos.routes";
 
 export const app = new Hono();
 

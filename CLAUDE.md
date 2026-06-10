@@ -42,10 +42,13 @@ pnpm view-report
 # Start local Postgres for development (postgres/postgres/heyhey_memo on localhost:5432)
 docker compose up -d
 
-# Push the Drizzle schema to the database / run migrations / open Drizzle Studio
+# Push the Drizzle schema to the database / run migrations
 pnpm --filter @repo/db db:push
 pnpm --filter @repo/db db:generate
 pnpm --filter @repo/db db:migrate
+
+# Drizzle Studio also launches automatically as part of `pnpm run dev`,
+# but can be run on its own with:
 pnpm --filter @repo/db db:studio
 ```
 
@@ -53,11 +56,11 @@ The admin portal runs on **port 3000** (`apps/admin-portal`). The API runs on **
 
 ## Architecture
 
-This is a **pnpm + Turborepo monorepo** using TypeScript throughout. Task graph: `build` depends on `^build`, `test` depends on `transit` and `@repo/vitest-config#build`.
+This is a **pnpm + Turborepo monorepo** using TypeScript throughout. Task graph: `build` depends on `^build`, `dev` depends on `^build` (so workspace package dependencies like `@repo/db` are built once before persistent dev servers start), `test` depends on `transit` and `@repo/vitest-config#build`.
 
 ### Apps
 - `apps/admin-portal` — Next.js 16 (App Router) admin portal. Runs on port 3000.
-- `apps/api` — Hono API server (`@hono/node-server`). Runs on port 8787. Uses `@repo/db` for database access; loads `.env` via `dotenv/config` at the entrypoint (`src/index.ts`).
+- `apps/api` — Hono API server (`@hono/node-server`). Runs on port 8787. Uses `@repo/db` for database access; loads `.env` via `dotenv/config` at the entrypoint (`src/index.ts`). Built with `tsdown` (bundles `src/` into a single `dist/index.js`, leaving `node_modules` deps external).
 
 ### App folder structure (slice pattern)
 Apps follow a **feature-slice / domain-oriented** layout. Inside `apps/<app>/`:
@@ -83,13 +86,13 @@ Rules:
 - Do not place business logic directly in `app/` route files.
 
 ### Packages
-- `packages/db` — Drizzle ORM client for Postgres (`postgres-js` driver). Schema tables in `src/schema/`, client (`db`) in `src/client.ts`, both re-exported from `src/index.ts`. Reads `DATABASE_URL` (falls back to a local default matching `docker-compose.yml`). `drizzle-kit` config in `drizzle.config.ts`, migrations output to `drizzle/`.
+- `packages/db` — Drizzle ORM client for Postgres (`postgres-js` driver). Schema tables in `src/schema/`, client (`db`) in `src/client.ts`, both re-exported from `src/index.ts`. Reads `DATABASE_URL` (falls back to a local default matching `docker-compose.yml`). `drizzle-kit` config in `drizzle.config.ts`, migrations output to `drizzle/`. Built with `tsdown` (entries: `src/index.ts`, `src/schema/index.ts`); `pnpm dev` here runs `tsdown --watch` alongside `drizzle-kit studio` (via `concurrently`).
 - `packages/ui` — Shared React component library. Built with `tsc` (components) and Tailwind CLI (styles). Exports via `dist/`; consumers use `transpilePackages`. Components live in `src/components/ui/` and are shadcn-style (Radix UI + CVA + tailwind-merge). Utilities at `src/lib/utils.ts`, hooks at `src/hooks/`.
 - `packages/tailwind-config` — Exports `shared-styles.css` (Tailwind v4 `@theme inline` tokens) and `postcss.config.js`. All apps and `packages/ui` import from here.
 - `packages/vitest-config` — Exports `base` and `ui` vitest configs plus coverage merge/report scripts. Coverage uses istanbul. The root `vitest.config.ts` uses vitest projects to run `packages/` (Node) and `apps/` (jsdom) separately.
 - `packages/math` — Example utility package with per-subpath exports (`./add`, `./subtract`).
 - `packages/eslint-config` — Shared ESLint config (Next.js + Prettier).
-- `packages/typescript-config` — Shared `tsconfig.json` bases.
+- `packages/typescript-config` — Shared `tsconfig.json` bases: `base.json` (Node ESM, `moduleResolution: NodeNext` — relative imports require `.js` extensions), `nextjs.json` (Next.js apps), `bundler.json` (extends `base.json` with `module: ESNext` / `moduleResolution: Bundler` — relative imports have **no extension**, for packages built with a bundler). `apps/api` and `packages/db` extend `bundler.json`.
 
 ### Tailwind v4
 This repo uses **Tailwind v4** (CSS-first configuration). Do **not** use v3 patterns:

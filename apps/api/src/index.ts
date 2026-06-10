@@ -2,7 +2,7 @@ import "dotenv/config";
 
 import { serve } from "@hono/node-server";
 
-import { app } from "./app.js";
+import { app } from "./app";
 
 const port = 8787;
 

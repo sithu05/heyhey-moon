@@ -14,7 +14,8 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsdown",
+    "dev": "concurrently -n build,studio -c blue,green \"tsdown --watch --no-clean\" \"drizzle-kit studio\"",
     "check-types": "tsc --noEmit",
     "lint": "eslint --max-warnings 0",
     "db:generate": "drizzle-kit generate",
@@ -26,9 +27,12 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.15.30",
+    "concurrently": "^10.0.3",
     "drizzle-kit": "^0.31.10",
     "eslint": "^9.39.1",
-    "typescript": "5.9.2"
+    "tsdown": "^0.22.2",
+    "typescript": "5.9.2",
+    "unrun": "^0.3.1"
   },
   "dependencies": {
     "drizzle-orm": "^0.45.2",
