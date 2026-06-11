@@ -117,6 +117,91 @@ promptsRouter.get("/:id", async (c) => {
   return c.json(prompt);
 });
 
+promptsRouter.patch("/:id", async (c) => {
+  const id = Number(c.req.param("id"));
+
+  if (!Number.isInteger(id)) {
+    return c.json({ error: "id must be an integer" }, 400);
+  }
+
+  let body: {
+    title?: unknown;
+    content?: unknown;
+    description?: unknown;
+    category?: unknown;
+    type?: unknown;
+    isActive?: unknown;
+  };
+
+  try {
+    body = await c.req.json();
+  } catch {
+    return c.json({ error: "Invalid JSON body" }, 400);
+  }
+
+  const updates: Partial<typeof prompts.$inferInsert> = {};
+
+  if (body.title !== undefined) {
+    if (typeof body.title !== "string") {
+      return c.json({ error: "title must be a string" }, 400);
+    }
+    updates.title = body.title;
+  }
+
+  if (body.content !== undefined) {
+    if (typeof body.content !== "string") {
+      return c.json({ error: "content must be a string" }, 400);
+    }
+    updates.content = body.content;
+  }
+
+  if (body.description !== undefined) {
+    if (body.description !== null && typeof body.description !== "string") {
+      return c.json({ error: "description must be a string or null" }, 400);
+    }
+    updates.description = body.description;
+  }
+
+  if (body.category !== undefined) {
+    if (!isPromptCategory(body.category)) {
+      return c.json(
+        { error: `category must be one of: ${promptCategoryEnum.enumValues.join(", ")}` },
+        400,
+      );
+    }
+    updates.category = body.category;
+  }
+
+  if (body.type !== undefined) {
+    if (!isPromptType(body.type)) {
+      return c.json(
+        { error: `type must be one of: ${promptTypeEnum.enumValues.join(", ")}` },
+        400,
+      );
+    }
+    updates.type = body.type;
+  }
+
+  if (body.isActive !== undefined) {
+    if (typeof body.isActive !== "boolean") {
+      return c.json({ error: "isActive must be a boolean" }, 400);
+    }
+    updates.isActive = body.isActive;
+  }
+
+  if (Object.keys(updates).length === 0) {
+    return c.json({ error: "No valid fields to update" }, 400);
+  }
+
+  const [updated] = await db.update(prompts).set(updates).where(eq(prompts.id, id)).returning();
+
+  if (!updated) {
+    return c.json({ error: "Prompt not found" }, 404);
+  }
+
+  return c.json(updated);
+});
+
 promptsRouter.post("/", async (c) => {
   let body: {
     title?: unknown;

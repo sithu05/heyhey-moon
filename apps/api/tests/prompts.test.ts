@@ -293,3 +293,104 @@ test("GET /prompts/:id returns 400 for a non-numeric id", async () => {
   const res = await app.request("/prompts/not-a-number");
   expect(res.status).toBe(400);
 });
+
+test("PATCH /prompts/:id updates provided fields and bumps updatedAt", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Patch Target",
+      content: "original content",
+      category: "ai",
+      type: "journal-prompt",
+    })
+    .returning();
+  createdIds.push(seed.id);
+
+  const res = await app.request(`/prompts/${seed.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: "Patched Title", isActive: false }),
+  });
+
+  expect(res.status).toBe(200);
+  const body = await res.json();
+  expect(body.title).toBe("Patched Title");
+  expect(body.isActive).toBe(false);
+  expect(body.content).toBe("original content");
+  expect(new Date(body.updatedAt).getTime()).toBeGreaterThanOrEqual(
+    new Date(seed.updatedAt).getTime(),
+  );
+});
+
+test("PATCH /prompts/:id returns 404 for a non-existent id", async () => {
+  const res = await app.request("/prompts/999999999", {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: "Doesn't matter" }),
+  });
+
+  expect(res.status).toBe(404);
+});
+
+test("PATCH /prompts/:id returns 400 for an invalid category", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Patch Invalid Category",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
+    })
+    .returning();
+  createdIds.push(seed.id);
+
+  const res = await app.request(`/prompts/${seed.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ category: "not-a-real-category" }),
+  });
+
+  expect(res.status).toBe(400);
+});
+
+test("PATCH /prompts/:id returns 400 for an invalid JSON body", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Patch Invalid JSON",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
+    })
+    .returning();
+  createdIds.push(seed.id);
+
+  const res = await app.request(`/prompts/${seed.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: "{not json",
+  });
+
+  expect(res.status).toBe(400);
+});
+
+test("PATCH /prompts/:id returns 400 for an empty update body", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Patch Empty Body",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
+    })
+    .returning();
+  createdIds.push(seed.id);
+
+  const res = await app.request(`/prompts/${seed.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({}),
+  });
+
+  expect(res.status).toBe(400);
+});
