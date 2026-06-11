@@ -394,3 +394,31 @@ test("PATCH /prompts/:id returns 400 for an empty update body", async () => {
 
   expect(res.status).toBe(400);
 });
+
+test("DELETE /prompts/:id deletes the prompt", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Delete Target",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
+    })
+    .returning();
+
+  const res = await app.request(`/prompts/${seed.id}`, { method: "DELETE" });
+  expect(res.status).toBe(204);
+
+  const getRes = await app.request(`/prompts/${seed.id}`);
+  expect(getRes.status).toBe(404);
+});
+
+test("DELETE /prompts/:id returns 404 for a non-existent id", async () => {
+  const res = await app.request("/prompts/999999999", { method: "DELETE" });
+  expect(res.status).toBe(404);
+});
+
+test("DELETE /prompts/:id returns 400 for a non-numeric id", async () => {
+  const res = await app.request("/prompts/not-a-number", { method: "DELETE" });
+  expect(res.status).toBe(400);
+});

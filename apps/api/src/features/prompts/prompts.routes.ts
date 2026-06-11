@@ -202,6 +202,22 @@ promptsRouter.patch("/:id", async (c) => {
   return c.json(updated);
 });
 
+promptsRouter.delete("/:id", async (c) => {
+  const id = Number(c.req.param("id"));
+
+  if (!Number.isInteger(id)) {
+    return c.json({ error: "id must be an integer" }, 400);
+  }
+
+  const [deleted] = await db.delete(prompts).where(eq(prompts.id, id)).returning();
+
+  if (!deleted) {
+    return c.json({ error: "Prompt not found" }, 404);
+  }
+
+  return c.body(null, 204);
+});
+
 promptsRouter.post("/", async (c) => {
   let body: {
     title?: unknown;
