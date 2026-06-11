@@ -101,6 +101,22 @@ promptsRouter.get("/lookup", async (c) => {
   return c.json(prompt);
 });
 
+promptsRouter.get("/:id", async (c) => {
+  const id = Number(c.req.param("id"));
+
+  if (!Number.isInteger(id)) {
+    return c.json({ error: "id must be an integer" }, 400);
+  }
+
+  const [prompt] = await db.select().from(prompts).where(eq(prompts.id, id));
+
+  if (!prompt) {
+    return c.json({ error: "Prompt not found" }, 404);
+  }
+
+  return c.json(prompt);
+});
+
 promptsRouter.post("/", async (c) => {
   let body: {
     title?: unknown;

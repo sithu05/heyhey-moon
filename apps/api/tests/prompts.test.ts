@@ -263,3 +263,33 @@ test("GET /prompts/lookup returns 400 for an invalid category", async () => {
   const res = await app.request("/prompts/lookup?category=invalid&type=ai-system");
   expect(res.status).toBe(400);
 });
+
+test("GET /prompts/:id returns the matching prompt", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Get By Id Prompt",
+      content: "content",
+      category: "journaling",
+      type: "ai-system",
+    })
+    .returning();
+  createdIds.push(seed.id);
+
+  const res = await app.request(`/prompts/${seed.id}`);
+  expect(res.status).toBe(200);
+
+  const body = await res.json();
+  expect(body.id).toBe(seed.id);
+  expect(body.title).toBe("Get By Id Prompt");
+});
+
+test("GET /prompts/:id returns 404 for a non-existent id", async () => {
+  const res = await app.request("/prompts/999999999");
+  expect(res.status).toBe(404);
+});
+
+test("GET /prompts/:id returns 400 for a non-numeric id", async () => {
+  const res = await app.request("/prompts/not-a-number");
+  expect(res.status).toBe(400);
+});
