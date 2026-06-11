@@ -152,7 +152,9 @@ test("GET /prompts?category=ai filters by category", async () => {
 
   const body = await res.json();
   expect(body.length).toBeGreaterThan(0);
-  expect(body.every((p: { category: string }) => p.category === "ai")).toBe(true);
+  expect(body.every((p: { category: string }) => p.category === "ai")).toBe(
+    true,
+  );
 });
 
 test("GET /prompts?type=journal-prompt filters by type", async () => {
@@ -161,7 +163,9 @@ test("GET /prompts?type=journal-prompt filters by type", async () => {
 
   const body = await res.json();
   expect(body.length).toBeGreaterThan(0);
-  expect(body.every((p: { type: string }) => p.type === "journal-prompt")).toBe(true);
+  expect(body.every((p: { type: string }) => p.type === "journal-prompt")).toBe(
+    true,
+  );
 });
 
 test("GET /prompts?isActive=false filters by isActive", async () => {
@@ -182,7 +186,9 @@ test("GET /prompts?isActive=false filters by isActive", async () => {
 
   const body = await res.json();
   expect(body.some((p: { id: number }) => p.id === inactive.id)).toBe(true);
-  expect(body.every((p: { isActive: boolean }) => p.isActive === false)).toBe(true);
+  expect(body.every((p: { isActive: boolean }) => p.isActive === false)).toBe(
+    true,
+  );
 });
 
 test("GET /prompts?category=invalid returns 400", async () => {
@@ -245,7 +251,9 @@ test("GET /prompts/lookup excludes inactive prompts (404 when only inactive matc
     .returning();
   createdIds.push(inactive.id);
 
-  const res = await app.request("/prompts/lookup?category=general&type=journal-prompt");
+  const res = await app.request(
+    "/prompts/lookup?category=general&type=journal-prompt",
+  );
   expect(res.status).toBe(404);
 });
 
@@ -260,7 +268,9 @@ test("GET /prompts/lookup returns 400 when type is missing", async () => {
 });
 
 test("GET /prompts/lookup returns 400 for an invalid category", async () => {
-  const res = await app.request("/prompts/lookup?category=invalid&type=ai-system");
+  const res = await app.request(
+    "/prompts/lookup?category=invalid&type=ai-system",
+  );
   expect(res.status).toBe(400);
 });
 

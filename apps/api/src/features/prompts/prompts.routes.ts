@@ -16,7 +16,8 @@ function isPromptCategory(value: unknown): value is PromptCategory {
 
 function isPromptType(value: unknown): value is PromptType {
   return (
-    typeof value === "string" && (promptTypeEnum.enumValues as readonly string[]).includes(value)
+    typeof value === "string" &&
+    (promptTypeEnum.enumValues as readonly string[]).includes(value)
   );
 }
 
@@ -30,7 +31,9 @@ promptsRouter.get("/", async (c) => {
   if (categoryParam !== undefined) {
     if (!isPromptCategory(categoryParam)) {
       return c.json(
-        { error: `category must be one of: ${promptCategoryEnum.enumValues.join(", ")}` },
+        {
+          error: `category must be one of: ${promptCategoryEnum.enumValues.join(", ")}`,
+        },
         400,
       );
     }
@@ -40,7 +43,9 @@ promptsRouter.get("/", async (c) => {
   if (typeParam !== undefined) {
     if (!isPromptType(typeParam)) {
       return c.json(
-        { error: `type must be one of: ${promptTypeEnum.enumValues.join(", ")}` },
+        {
+          error: `type must be one of: ${promptTypeEnum.enumValues.join(", ")}`,
+        },
         400,
       );
     }
@@ -69,14 +74,18 @@ promptsRouter.get("/lookup", async (c) => {
 
   if (!isPromptCategory(categoryParam)) {
     return c.json(
-      { error: `category is required and must be one of: ${promptCategoryEnum.enumValues.join(", ")}` },
+      {
+        error: `category is required and must be one of: ${promptCategoryEnum.enumValues.join(", ")}`,
+      },
       400,
     );
   }
 
   if (!isPromptType(typeParam)) {
     return c.json(
-      { error: `type is required and must be one of: ${promptTypeEnum.enumValues.join(", ")}` },
+      {
+        error: `type is required and must be one of: ${promptTypeEnum.enumValues.join(", ")}`,
+      },
       400,
     );
   }
@@ -95,7 +104,10 @@ promptsRouter.get("/lookup", async (c) => {
     .limit(1);
 
   if (!prompt) {
-    return c.json({ error: "No active prompt found for the given category and type" }, 404);
+    return c.json(
+      { error: "No active prompt found for the given category and type" },
+      404,
+    );
   }
 
   return c.json(prompt);
@@ -165,7 +177,9 @@ promptsRouter.patch("/:id", async (c) => {
   if (body.category !== undefined) {
     if (!isPromptCategory(body.category)) {
       return c.json(
-        { error: `category must be one of: ${promptCategoryEnum.enumValues.join(", ")}` },
+        {
+          error: `category must be one of: ${promptCategoryEnum.enumValues.join(", ")}`,
+        },
         400,
       );
     }
@@ -175,7 +189,9 @@ promptsRouter.patch("/:id", async (c) => {
   if (body.type !== undefined) {
     if (!isPromptType(body.type)) {
       return c.json(
-        { error: `type must be one of: ${promptTypeEnum.enumValues.join(", ")}` },
+        {
+          error: `type must be one of: ${promptTypeEnum.enumValues.join(", ")}`,
+        },
         400,
       );
     }
@@ -193,7 +209,11 @@ promptsRouter.patch("/:id", async (c) => {
     return c.json({ error: "No valid fields to update" }, 400);
   }
 
-  const [updated] = await db.update(prompts).set(updates).where(eq(prompts.id, id)).returning();
+  const [updated] = await db
+    .update(prompts)
+    .set(updates)
+    .where(eq(prompts.id, id))
+    .returning();
 
   if (!updated) {
     return c.json({ error: "Prompt not found" }, 404);
@@ -209,7 +229,10 @@ promptsRouter.delete("/:id", async (c) => {
     return c.json({ error: "id must be an integer" }, 400);
   }
 
-  const [deleted] = await db.delete(prompts).where(eq(prompts.id, id)).returning();
+  const [deleted] = await db
+    .delete(prompts)
+    .where(eq(prompts.id, id))
+    .returning();
 
   if (!deleted) {
     return c.json({ error: "Prompt not found" }, 404);
@@ -240,13 +263,18 @@ promptsRouter.post("/", async (c) => {
 
   if (!isPromptCategory(body.category)) {
     return c.json(
-      { error: `category must be one of: ${promptCategoryEnum.enumValues.join(", ")}` },
+      {
+        error: `category must be one of: ${promptCategoryEnum.enumValues.join(", ")}`,
+      },
       400,
     );
   }
 
   if (!isPromptType(body.type)) {
-    return c.json({ error: `type must be one of: ${promptTypeEnum.enumValues.join(", ")}` }, 400);
+    return c.json(
+      { error: `type must be one of: ${promptTypeEnum.enumValues.join(", ")}` },
+      400,
+    );
   }
 
   if (body.description !== undefined && typeof body.description !== "string") {
