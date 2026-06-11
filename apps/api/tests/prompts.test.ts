@@ -199,3 +199,67 @@ test("GET /prompts?isActive=notabool returns 400", async () => {
   const res = await app.request("/prompts?isActive=notabool");
   expect(res.status).toBe(400);
 });
+
+test("GET /prompts/lookup returns the newest active match", async () => {
+  const [older] = await db
+    .insert(prompts)
+    .values({
+      title: "Lookup Older AI System",
+      content: "older",
+      category: "ai",
+      type: "ai-system",
+      isActive: true,
+      createdAt: new Date(Date.now() - 60_000),
+    })
+    .returning();
+  const [newer] = await db
+    .insert(prompts)
+    .values({
+      title: "Lookup Newer AI System",
+      content: "newer",
+      category: "ai",
+      type: "ai-system",
+      isActive: true,
+      createdAt: new Date(Date.now() + 60_000),
+    })
+    .returning();
+  createdIds.push(older.id, newer.id);
+
+  const res = await app.request("/prompts/lookup?category=ai&type=ai-system");
+  expect(res.status).toBe(200);
+
+  const body = await res.json();
+  expect(body.id).toBe(newer.id);
+});
+
+test("GET /prompts/lookup excludes inactive prompts (404 when only inactive matches exist)", async () => {
+  const [inactive] = await db
+    .insert(prompts)
+    .values({
+      title: "Lookup Inactive General Journal",
+      content: "inactive",
+      category: "general",
+      type: "journal-prompt",
+      isActive: false,
+    })
+    .returning();
+  createdIds.push(inactive.id);
+
+  const res = await app.request("/prompts/lookup?category=general&type=journal-prompt");
+  expect(res.status).toBe(404);
+});
+
+test("GET /prompts/lookup returns 400 when category is missing", async () => {
+  const res = await app.request("/prompts/lookup?type=ai-system");
+  expect(res.status).toBe(400);
+});
+
+test("GET /prompts/lookup returns 400 when type is missing", async () => {
+  const res = await app.request("/prompts/lookup?category=ai");
+  expect(res.status).toBe(400);
+});
+
+test("GET /prompts/lookup returns 400 for an invalid category", async () => {
+  const res = await app.request("/prompts/lookup?category=invalid&type=ai-system");
+  expect(res.status).toBe(400);
+});

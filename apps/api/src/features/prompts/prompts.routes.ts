@@ -63,6 +63,44 @@ promptsRouter.get("/", async (c) => {
   return c.json(allPrompts);
 });
 
+promptsRouter.get("/lookup", async (c) => {
+  const categoryParam = c.req.query("category");
+  const typeParam = c.req.query("type");
+
+  if (!isPromptCategory(categoryParam)) {
+    return c.json(
+      { error: `category is required and must be one of: ${promptCategoryEnum.enumValues.join(", ")}` },
+      400,
+    );
+  }
+
+  if (!isPromptType(typeParam)) {
+    return c.json(
+      { error: `type is required and must be one of: ${promptTypeEnum.enumValues.join(", ")}` },
+      400,
+    );
+  }
+
+  const [prompt] = await db
+    .select()
+    .from(prompts)
+    .where(
+      and(
+        eq(prompts.category, categoryParam),
+        eq(prompts.type, typeParam),
+        eq(prompts.isActive, true),
+      ),
+    )
+    .orderBy(desc(prompts.createdAt))
+    .limit(1);
+
+  if (!prompt) {
+    return c.json({ error: "No active prompt found for the given category and type" }, 404);
+  }
+
+  return c.json(prompt);
+});
+
 promptsRouter.post("/", async (c) => {
   let body: {
     title?: unknown;
