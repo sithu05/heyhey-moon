@@ -114,3 +114,88 @@ test("POST /prompts returns 400 for an invalid JSON body", async () => {
 
   expect(res.status).toBe(400);
 });
+
+test("GET /prompts lists prompts ordered by createdAt desc", async () => {
+  const [older] = await db
+    .insert(prompts)
+    .values({
+      title: "List Older",
+      content: "older content",
+      category: "ai",
+      type: "ai-system",
+      createdAt: new Date(Date.now() - 60_000),
+    })
+    .returning();
+  const [newer] = await db
+    .insert(prompts)
+    .values({
+      title: "List Newer",
+      content: "newer content",
+      category: "journaling",
+      type: "journal-prompt",
+      createdAt: new Date(),
+    })
+    .returning();
+  createdIds.push(older.id, newer.id);
+
+  const res = await app.request("/prompts");
+  expect(res.status).toBe(200);
+
+  const body = await res.json();
+  const ids: number[] = body.map((p: { id: number }) => p.id);
+  expect(ids.indexOf(newer.id)).toBeLessThan(ids.indexOf(older.id));
+});
+
+test("GET /prompts?category=ai filters by category", async () => {
+  const res = await app.request("/prompts?category=ai");
+  expect(res.status).toBe(200);
+
+  const body = await res.json();
+  expect(body.length).toBeGreaterThan(0);
+  expect(body.every((p: { category: string }) => p.category === "ai")).toBe(true);
+});
+
+test("GET /prompts?type=journal-prompt filters by type", async () => {
+  const res = await app.request("/prompts?type=journal-prompt");
+  expect(res.status).toBe(200);
+
+  const body = await res.json();
+  expect(body.length).toBeGreaterThan(0);
+  expect(body.every((p: { type: string }) => p.type === "journal-prompt")).toBe(true);
+});
+
+test("GET /prompts?isActive=false filters by isActive", async () => {
+  const [inactive] = await db
+    .insert(prompts)
+    .values({
+      title: "Inactive General Prompt",
+      content: "inactive content",
+      category: "general",
+      type: "ai-system",
+      isActive: false,
+    })
+    .returning();
+  createdIds.push(inactive.id);
+
+  const res = await app.request("/prompts?isActive=false");
+  expect(res.status).toBe(200);
+
+  const body = await res.json();
+  expect(body.some((p: { id: number }) => p.id === inactive.id)).toBe(true);
+  expect(body.every((p: { isActive: boolean }) => p.isActive === false)).toBe(true);
+});
+
+test("GET /prompts?category=invalid returns 400", async () => {
+  const res = await app.request("/prompts?category=invalid");
+  expect(res.status).toBe(400);
+});
+
+test("GET /prompts?type=invalid returns 400", async () => {
+  const res = await app.request("/prompts?type=invalid");
+  expect(res.status).toBe(400);
+});
+
+test("GET /prompts?isActive=notabool returns 400", async () => {
+  const res = await app.request("/prompts?isActive=notabool");
+  expect(res.status).toBe(400);
+});
