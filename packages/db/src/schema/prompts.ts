@@ -1,7 +1,21 @@
-import { boolean, pgEnum, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import {
+  boolean,
+  pgEnum,
+  pgTable,
+  serial,
+  text,
+  timestamp,
+} from "drizzle-orm/pg-core";
 
-export const promptCategoryEnum = pgEnum("prompt_category", ["general", "journaling", "ai"]);
-export const promptTypeEnum = pgEnum("prompt_type", ["journal-prompt", "ai-system"]);
+export const promptCategoryEnum = pgEnum("prompt_category", [
+  "general",
+  "journaling",
+  "ai",
+]);
+export const promptTypeEnum = pgEnum("prompt_type", [
+  "journal-prompt",
+  "ai-system",
+]);
 
 export const prompts = pgTable("prompts", {
   id: serial("id").primaryKey(),
