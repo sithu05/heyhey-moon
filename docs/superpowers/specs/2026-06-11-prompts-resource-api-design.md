@@ -71,7 +71,7 @@ New file `apps/api/src/features/prompts/prompts.routes.ts`, mounted at `/prompts
 | `GET` | `/prompts` | List prompts. Optional query params: `?category=`, `?type=`, `?isActive=` (combinable, ANDed). Defaults to all prompts (active + inactive), ordered by `createdAt desc`. |
 | `GET` | `/prompts/lookup?category=&type=` | Returns a **single** prompt object: the newest (`createdAt desc`) prompt matching the given `category`/`type` where `isActive=true`. 404 if none found. Must be defined before `/:id` in the router to avoid Hono path collision. |
 | `GET` | `/prompts/:id` | Fetch a single prompt by id. 404 if not found. |
-| `POST` | `/prompts` | Create a prompt. Body: `title`, `content` (required); `description`, `category`, `type`, `isActive` (optional, with defaults). |
+| `POST` | `/prompts` | Create a prompt. Body: `title`, `content`, `category`, `type` (required); `description`, `isActive` (optional, `isActive` defaults to `true`). `category`/`type` are required (not defaulted) since they're the primary fields consumers filter on. |
 | `PATCH` | `/prompts/:id` | Partial update of any field. 404 if not found. |
 | `DELETE` | `/prompts/:id` | Delete a prompt. 404 if not found, 204 on success. |
 
