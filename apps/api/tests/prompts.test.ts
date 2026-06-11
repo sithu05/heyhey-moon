@@ -405,6 +405,7 @@ test("DELETE /prompts/:id deletes the prompt", async () => {
       type: "journal-prompt",
     })
     .returning();
+  createdIds.push(seed.id); // defensive: afterAll delete is a no-op if already deleted below
 
   const res = await app.request(`/prompts/${seed.id}`, { method: "DELETE" });
   expect(res.status).toBe(204);
