@@ -1,7 +1,11 @@
 {
   "$schema": "https://turborepo.dev/schema.json",
   "ui": "tui",
-  "globalEnv": ["DATABASE_URL"],
+  "cacheMaxAge": "7d",
+  "cacheMaxSize": "10GB",
+  "globalEnv": [
+    "DATABASE_URL"
+  ],
   "tasks": {
     "build": {
       "dependsOn": [
@@ -28,7 +32,6 @@
       ]
     },
     "dev": {
-      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
