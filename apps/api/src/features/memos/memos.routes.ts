@@ -1,6 +1,7 @@
-import { db, memos } from "@repo/db";
 import { desc } from "drizzle-orm";
 import { Hono } from "hono";
+
+import { db, memos } from "@repo/db";
 
 export const memosRouter = new Hono();
 

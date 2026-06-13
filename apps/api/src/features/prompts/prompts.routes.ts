@@ -1,6 +1,7 @@
-import { db, promptCategoryEnum, promptTypeEnum, prompts } from "@repo/db";
 import { and, desc, eq, type SQL } from "drizzle-orm";
 import { Hono } from "hono";
+
+import { db, promptCategoryEnum, promptTypeEnum, prompts } from "@repo/db";
 
 export const promptsRouter = new Hono();
 

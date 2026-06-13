@@ -1,4 +1,5 @@
 import React from "react";
+
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/ui/sidebar";
 import { TooltipProvider } from "@repo/ui/components/ui/tooltip";
 

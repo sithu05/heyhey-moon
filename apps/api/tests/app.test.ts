@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+
 import { app } from "../src/app";
 
 test("GET /health returns ok status", async () => {

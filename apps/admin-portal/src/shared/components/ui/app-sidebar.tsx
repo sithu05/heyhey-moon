@@ -1,5 +1,10 @@
 "use client";
 
+import { LayoutDashboardIcon, ShoppingCartIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { ComponentProps } from "react";
+
 import {
   Sidebar,
   SidebarContent,
@@ -12,11 +17,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@repo/ui/components/ui/sidebar";
-import Image from "next/image";
-import Link from "next/link";
-import { ComponentProps } from "react";
+
 import { SidebarToggler } from "./sidebar-toggler";
-import { LayoutDashboardIcon, ShoppingCartIcon } from "lucide-react";
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (

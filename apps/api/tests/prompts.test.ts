@@ -1,6 +1,7 @@
-import { db, prompts } from "@repo/db";
 import { eq } from "drizzle-orm";
 import { afterAll, expect, test } from "vitest";
+
+import { db, prompts } from "@repo/db";
 
 import { app } from "../src/app";
 
