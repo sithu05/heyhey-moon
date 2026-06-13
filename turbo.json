@@ -4,7 +4,8 @@
   "cacheMaxAge": "7d",
   "cacheMaxSize": "10GB",
   "globalEnv": [
-    "DATABASE_URL"
+    "DATABASE_URL",
+    "ENCRYPTION_KEY"
   ],
   "tasks": {
     "build": {
