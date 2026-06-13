@@ -1,16 +1,30 @@
 import { eq } from "drizzle-orm";
-import { afterAll, expect, test } from "vitest";
+import { afterAll, beforeAll, expect, test } from "vitest";
 
-import { db, prompts } from "@repo/db";
+import { aiModels, db, prompts } from "@repo/db";
 
 import { app } from "../src/app";
 
 const createdIds: number[] = [];
+let testModelId: number;
+
+beforeAll(async () => {
+  const [model] = await db
+    .insert(aiModels)
+    .values({
+      name: "Test Model for Prompts",
+      provider: "openai",
+      apiKey: "sk-test-prompts-model",
+    })
+    .returning();
+  testModelId = model.id;
+});
 
 afterAll(async () => {
   for (const id of createdIds) {
     await db.delete(prompts).where(eq(prompts.id, id));
   }
+  await db.delete(aiModels).where(eq(aiModels.id, testModelId));
 });
 
 test("POST /prompts creates a prompt", async () => {
@@ -22,6 +36,7 @@ test("POST /prompts creates a prompt", async () => {
       content: "What are you grateful for today?",
       category: "journaling",
       type: "journal-prompt",
+      modelId: testModelId,
     }),
   });
 
@@ -32,6 +47,7 @@ test("POST /prompts creates a prompt", async () => {
     content: "What are you grateful for today?",
     category: "journaling",
     type: "journal-prompt",
+    modelId: testModelId,
     isActive: true,
   });
   expect(typeof body.id).toBe("number");
@@ -48,6 +64,7 @@ test("POST /prompts accepts an optional description and isActive", async () => {
       content: "Summarize the following memo in one sentence: {{memo}}",
       category: "ai",
       type: "ai-system",
+      modelId: testModelId,
       isActive: false,
     }),
   });
@@ -85,6 +102,7 @@ test("POST /prompts returns 400 for an invalid category", async () => {
       content: "content",
       category: "not-a-real-category",
       type: "journal-prompt",
+      modelId: testModelId,
     }),
   });
 
@@ -100,6 +118,22 @@ test("POST /prompts returns 400 for an invalid type", async () => {
       content: "content",
       category: "general",
       type: "not-a-real-type",
+      modelId: testModelId,
+    }),
+  });
+
+  expect(res.status).toBe(400);
+});
+
+test("POST /prompts returns 400 when modelId is missing or not an integer", async () => {
+  const res = await app.request("/prompts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: "Missing modelId",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
     }),
   });
 
@@ -124,6 +158,7 @@ test("GET /prompts lists prompts ordered by createdAt desc", async () => {
       content: "older content",
       category: "ai",
       type: "ai-system",
+      modelId: testModelId,
       createdAt: new Date(Date.now() - 60_000),
     })
     .returning();
@@ -134,6 +169,7 @@ test("GET /prompts lists prompts ordered by createdAt desc", async () => {
       content: "newer content",
       category: "journaling",
       type: "journal-prompt",
+      modelId: testModelId,
       createdAt: new Date(),
     })
     .returning();
@@ -177,6 +213,7 @@ test("GET /prompts?isActive=false filters by isActive", async () => {
       content: "inactive content",
       category: "general",
       type: "ai-system",
+      modelId: testModelId,
       isActive: false,
     })
     .returning();
@@ -215,6 +252,7 @@ test("GET /prompts/lookup returns the newest active match", async () => {
       content: "older",
       category: "ai",
       type: "ai-system",
+      modelId: testModelId,
       isActive: true,
       createdAt: new Date(Date.now() - 60_000),
     })
@@ -226,6 +264,7 @@ test("GET /prompts/lookup returns the newest active match", async () => {
       content: "newer",
       category: "ai",
       type: "ai-system",
+      modelId: testModelId,
       isActive: true,
       createdAt: new Date(Date.now() + 60_000),
     })
@@ -247,6 +286,7 @@ test("GET /prompts/lookup excludes inactive prompts (404 when only inactive matc
       content: "inactive",
       category: "general",
       type: "journal-prompt",
+      modelId: testModelId,
       isActive: false,
     })
     .returning();
@@ -283,6 +323,7 @@ test("GET /prompts/:id returns the matching prompt", async () => {
       content: "content",
       category: "journaling",
       type: "ai-system",
+      modelId: testModelId,
     })
     .returning();
   createdIds.push(seed.id);
@@ -313,6 +354,7 @@ test("PATCH /prompts/:id updates provided fields and bumps updatedAt", async () 
       content: "original content",
       category: "ai",
       type: "journal-prompt",
+      modelId: testModelId,
     })
     .returning();
   createdIds.push(seed.id);
@@ -351,6 +393,7 @@ test("PATCH /prompts/:id returns 400 for an invalid category", async () => {
       content: "content",
       category: "general",
       type: "journal-prompt",
+      modelId: testModelId,
     })
     .returning();
   createdIds.push(seed.id);
@@ -364,6 +407,28 @@ test("PATCH /prompts/:id returns 400 for an invalid category", async () => {
   expect(res.status).toBe(400);
 });
 
+test("PATCH /prompts/:id returns 400 when modelId is not an integer", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Patch Invalid ModelId",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
+      modelId: testModelId,
+    })
+    .returning();
+  createdIds.push(seed.id);
+
+  const res = await app.request(`/prompts/${seed.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ modelId: "not-a-number" }),
+  });
+
+  expect(res.status).toBe(400);
+});
+
 test("PATCH /prompts/:id returns 400 for an invalid JSON body", async () => {
   const [seed] = await db
     .insert(prompts)
@@ -372,6 +437,7 @@ test("PATCH /prompts/:id returns 400 for an invalid JSON body", async () => {
       content: "content",
       category: "general",
       type: "journal-prompt",
+      modelId: testModelId,
     })
     .returning();
   createdIds.push(seed.id);
@@ -393,6 +459,7 @@ test("PATCH /prompts/:id returns 400 for an empty update body", async () => {
       content: "content",
       category: "general",
       type: "journal-prompt",
+      modelId: testModelId,
     })
     .returning();
   createdIds.push(seed.id);
@@ -414,6 +481,7 @@ test("DELETE /prompts/:id deletes the prompt", async () => {
       content: "content",
       category: "general",
       type: "journal-prompt",
+      modelId: testModelId,
     })
     .returning();
   createdIds.push(seed.id); // defensive: afterAll delete is a no-op if already deleted below
