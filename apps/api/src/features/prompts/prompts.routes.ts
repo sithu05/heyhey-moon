@@ -1,7 +1,13 @@
 import { and, desc, eq, type SQL } from "drizzle-orm";
 import { Hono } from "hono";
 
-import { db, promptCategoryEnum, promptTypeEnum, prompts } from "@repo/db";
+import {
+  aiModels,
+  db,
+  promptCategoryEnum,
+  promptTypeEnum,
+  prompts,
+} from "@repo/db";
 
 export const promptsRouter = new Hono();
 
@@ -143,6 +149,7 @@ promptsRouter.patch("/:id", async (c) => {
     description?: unknown;
     category?: unknown;
     type?: unknown;
+    modelId?: unknown;
     isActive?: unknown;
   };
 
@@ -199,6 +206,26 @@ promptsRouter.patch("/:id", async (c) => {
     updates.type = body.type;
   }
 
+  if (body.modelId !== undefined) {
+    if (typeof body.modelId !== "number" || !Number.isInteger(body.modelId)) {
+      return c.json({ error: "modelId must be an integer" }, 400);
+    }
+
+    const [model] = await db
+      .select({ id: aiModels.id })
+      .from(aiModels)
+      .where(eq(aiModels.id, body.modelId));
+
+    if (!model) {
+      return c.json(
+        { error: "modelId does not reference an existing AI model" },
+        400,
+      );
+    }
+
+    updates.modelId = body.modelId;
+  }
+
   if (body.isActive !== undefined) {
     if (typeof body.isActive !== "boolean") {
       return c.json({ error: "isActive must be a boolean" }, 400);
@@ -249,6 +276,7 @@ promptsRouter.post("/", async (c) => {
     description?: unknown;
     category?: unknown;
     type?: unknown;
+    modelId?: unknown;
     isActive?: unknown;
   };
 
@@ -260,6 +288,25 @@ promptsRouter.post("/", async (c) => {
 
   if (typeof body.title !== "string" || typeof body.content !== "string") {
     return c.json({ error: "title and content are required" }, 400);
+  }
+
+  if (typeof body.modelId !== "number" || !Number.isInteger(body.modelId)) {
+    return c.json(
+      { error: "modelId is required and must be an integer" },
+      400,
+    );
+  }
+
+  const [model] = await db
+    .select({ id: aiModels.id })
+    .from(aiModels)
+    .where(eq(aiModels.id, body.modelId));
+
+  if (!model) {
+    return c.json(
+      { error: "modelId does not reference an existing AI model" },
+      400,
+    );
   }
 
   if (!isPromptCategory(body.category)) {
@@ -291,6 +338,7 @@ promptsRouter.post("/", async (c) => {
     content: body.content,
     category: body.category,
     type: body.type,
+    modelId: body.modelId,
   };
 
   if (body.description !== undefined) {
