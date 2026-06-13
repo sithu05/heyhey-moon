@@ -140,6 +140,22 @@ test("POST /prompts returns 400 when modelId is missing or not an integer", asyn
   expect(res.status).toBe(400);
 });
 
+test("POST /prompts returns 400 when modelId does not reference an existing AI model", async () => {
+  const res = await app.request("/prompts", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      title: "Nonexistent model",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
+      modelId: 999999999,
+    }),
+  });
+
+  expect(res.status).toBe(400);
+});
+
 test("POST /prompts returns 400 for an invalid JSON body", async () => {
   const res = await app.request("/prompts", {
     method: "POST",
@@ -424,6 +440,28 @@ test("PATCH /prompts/:id returns 400 when modelId is not an integer", async () =
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ modelId: "not-a-number" }),
+  });
+
+  expect(res.status).toBe(400);
+});
+
+test("PATCH /prompts/:id returns 400 when modelId does not reference an existing AI model", async () => {
+  const [seed] = await db
+    .insert(prompts)
+    .values({
+      title: "Patch Nonexistent ModelId",
+      content: "content",
+      category: "general",
+      type: "journal-prompt",
+      modelId: testModelId,
+    })
+    .returning();
+  createdIds.push(seed.id);
+
+  const res = await app.request(`/prompts/${seed.id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ modelId: 999999999 }),
   });
 
   expect(res.status).toBe(400);

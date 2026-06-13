@@ -1,7 +1,13 @@
 import { and, desc, eq, type SQL } from "drizzle-orm";
 import { Hono } from "hono";
 
-import { db, promptCategoryEnum, promptTypeEnum, prompts } from "@repo/db";
+import {
+  aiModels,
+  db,
+  promptCategoryEnum,
+  promptTypeEnum,
+  prompts,
+} from "@repo/db";
 
 export const promptsRouter = new Hono();
 
@@ -204,6 +210,19 @@ promptsRouter.patch("/:id", async (c) => {
     if (typeof body.modelId !== "number" || !Number.isInteger(body.modelId)) {
       return c.json({ error: "modelId must be an integer" }, 400);
     }
+
+    const [model] = await db
+      .select({ id: aiModels.id })
+      .from(aiModels)
+      .where(eq(aiModels.id, body.modelId));
+
+    if (!model) {
+      return c.json(
+        { error: "modelId does not reference an existing AI model" },
+        400,
+      );
+    }
+
     updates.modelId = body.modelId;
   }
 
@@ -272,7 +291,22 @@ promptsRouter.post("/", async (c) => {
   }
 
   if (typeof body.modelId !== "number" || !Number.isInteger(body.modelId)) {
-    return c.json({ error: "modelId is required and must be an integer" }, 400);
+    return c.json(
+      { error: "modelId is required and must be an integer" },
+      400,
+    );
+  }
+
+  const [model] = await db
+    .select({ id: aiModels.id })
+    .from(aiModels)
+    .where(eq(aiModels.id, body.modelId));
+
+  if (!model) {
+    return c.json(
+      { error: "modelId does not reference an existing AI model" },
+      400,
+    );
   }
 
   if (!isPromptCategory(body.category)) {
