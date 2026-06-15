@@ -1,5 +1,10 @@
-import { defineConfig } from "vitest/config";
-import { sharedConfig } from "@repo/vitest-config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+import { defineConfig, mergeConfig } from "vitest/config";
+import { sharedConfig, uiConfig } from "@repo/vitest-config";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   ...sharedConfig,
@@ -13,12 +18,26 @@ export default defineConfig({
           // ...
         },
       },
-      {
-        root: "./apps",
+      mergeConfig(uiConfig, {
+        root: "./apps/admin-portal",
+        resolve: {
+          alias: {
+            "@": path.resolve(dirname, "./apps/admin-portal/src"),
+          },
+        },
         test: {
           ...sharedConfig.test,
-          // Project-specific configuration for apps
-          environment: "jsdom",
+        },
+      }),
+      {
+        root: "./apps/api",
+        resolve: {
+          alias: {
+            "@": path.resolve(dirname, "./apps/api/src"),
+          },
+        },
+        test: {
+          ...sharedConfig.test,
         },
       },
     ],

@@ -55,7 +55,11 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-3">
               <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Dashboard">
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname === "/"}
+                  tooltip="Dashboard"
+                >
                   <Link href="/">
                     <LayoutDashboardIcon />
                     <span>Dashboard</span>

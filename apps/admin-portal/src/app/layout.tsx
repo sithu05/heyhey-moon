@@ -4,7 +4,6 @@ import type { Metadata } from "next";
 
 import { Toaster } from "@/shared/components/sonner";
 import { AppShell } from "@/shared/components/ui/app-shell";
-import { TooltipProvider } from "@repo/ui/components/ui/tooltip";
 
 export const metadata: Metadata = {
   title: "Zello Admin",
@@ -21,9 +20,7 @@ export default function RootLayout({
       <body className={GeistSans.className}>
         <Toaster />
 
-        <TooltipProvider>
-          <AppShell>{children}</AppShell>
-        </TooltipProvider>
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
