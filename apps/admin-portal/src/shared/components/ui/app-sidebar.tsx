@@ -1,8 +1,9 @@
 "use client";
 
-import { LayoutDashboardIcon, ShoppingCartIcon } from "lucide-react";
+import { LayoutDashboardIcon, QuoteIcon, ShoppingCartIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ComponentProps } from "react";
 
 import {
@@ -21,6 +22,8 @@ import {
 import { SidebarToggler } from "./sidebar-toggler";
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="px-6 border-b border-sidebar-border h-20 flex justify-center group-data-[state=collapsed]:px-4">
@@ -52,7 +55,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
           <SidebarGroupContent>
             <SidebarMenu className="space-y-3">
               <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive>
+                <SidebarMenuButton asChild tooltip="Dashboard">
                   <Link href="/">
                     <LayoutDashboardIcon />
                     <span>Dashboard</span>
@@ -60,7 +63,19 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
                 </SidebarMenuButton>
               </SidebarMenuItem>
               <SidebarMenuItem>
-                <SidebarMenuButton asChild>
+                <SidebarMenuButton
+                  asChild
+                  isActive={pathname.startsWith("/quotes")}
+                  tooltip="Quotes"
+                >
+                  <Link href="/quotes">
+                    <QuoteIcon />
+                    <span>Quotes</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild tooltip="Orders">
                   <Link href="#">
                     <ShoppingCartIcon />
                     <span>Orders</span>
