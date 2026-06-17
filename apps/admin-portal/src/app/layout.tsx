@@ -1,6 +1,8 @@
 import "./globals.css";
-import { GeistSans } from "geist/font/sans";
+import { Public_Sans } from "next/font/google";
 import type { Metadata } from "next";
+
+const publicSans = Public_Sans({ subsets: ["latin"] });
 
 import { Toaster } from "@/shared/components/sonner";
 
@@ -16,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={GeistSans.className}>
+      <body className={publicSans.className}>
         <Toaster />
 
         {children}

@@ -13,8 +13,19 @@ const SAMPLE_ATTRIBUTES: QuoteAttributes = {
 
 export default function Page() {
   return (
-    <div className="flex flex-col gap-4 p-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Quotes</h1>
+    <div className="">
+      <div className="mb-8">
+        <div className="space-y-2">
+          <h1 className="text-2xl font-semibold">Quotes</h1>
+          <p className="text-sm text-gray-500 max-w-lg">
+            Every quote is auto-classified by AI across seven psychological
+            dimensions. Review the tags, refine them, or regenerate.
+          </p>
+        </div>
+
+        {/* Todo: header buttons will go here (Edit Prompt, Add Quote) */}
+      </div>
+
       <DimensionChips attributes={SAMPLE_ATTRIBUTES} />
     </div>
   );
