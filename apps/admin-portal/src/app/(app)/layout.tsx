@@ -1,12 +1,9 @@
-import React from "react";
-
+import { AppHeader } from "@/shared/components/ui/app-header";
+import { AppSidebar } from "@/shared/components/ui/app-sidebar";
 import { SidebarInset, SidebarProvider } from "@repo/ui/components/ui/sidebar";
 import { TooltipProvider } from "@repo/ui/components/ui/tooltip";
 
-import { AppHeader } from "./app-header";
-import { AppSidebar } from "./app-sidebar";
-
-export function AppShell({ children }: { children: React.ReactNode }) {
+export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <TooltipProvider delayDuration={0}>
       <SidebarProvider
@@ -16,8 +13,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             "--sidebar-width-icon": "4.625rem",
           } as React.CSSProperties
         }
+        className="bg-sidebar"
       >
-        <AppSidebar />
+        <AppSidebar variant="inset" className="p-0" />
         <SidebarInset>
           <AppHeader />
           <main className="flex-1 overflow-auto p-4 md:p-6">{children}</main>

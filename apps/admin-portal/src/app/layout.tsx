@@ -3,7 +3,6 @@ import { GeistSans } from "geist/font/sans";
 import type { Metadata } from "next";
 
 import { Toaster } from "@/shared/components/sonner";
-import { AppShell } from "@/shared/components/ui/app-shell";
 
 export const metadata: Metadata = {
   title: "Zello Admin",
@@ -20,7 +19,7 @@ export default function RootLayout({
       <body className={GeistSans.className}>
         <Toaster />
 
-        <AppShell>{children}</AppShell>
+        {children}
       </body>
     </html>
   );
