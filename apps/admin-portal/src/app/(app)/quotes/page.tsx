@@ -1,7 +1,8 @@
 import { DimensionChips } from "@/features/quotes/components/ui/dimension-chips";
+import { EditPromptDialog } from "@/features/quotes/components/edit-prompt-dialog";
 import type { QuoteAttributes } from "@/features/quotes/types";
 import { Button } from "@repo/ui/components/ui/button";
-import { PencilIcon, PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 
 const SAMPLE_ATTRIBUTES: QuoteAttributes = {
   mindset: "Growth",
@@ -26,10 +27,7 @@ export default function Page() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="lg">
-            <PencilIcon className="size-4" />
-            Edit prompt
-          </Button>
+          <EditPromptDialog />
           <Button variant="default" size="lg">
             <PlusIcon className="size-4" />
             Add quote
