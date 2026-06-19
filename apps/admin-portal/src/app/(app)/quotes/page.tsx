@@ -1,5 +1,7 @@
 import { DimensionChips } from "@/features/quotes/components/ui/dimension-chips";
 import type { QuoteAttributes } from "@/features/quotes/types";
+import { Button } from "@repo/ui/components/ui/button";
+import { PencilIcon, PlusIcon } from "lucide-react";
 
 const SAMPLE_ATTRIBUTES: QuoteAttributes = {
   mindset: "Growth",
@@ -14,7 +16,7 @@ const SAMPLE_ATTRIBUTES: QuoteAttributes = {
 export default function Page() {
   return (
     <div className="">
-      <div className="mb-8">
+      <div className="mb-8 flex items-end justify-between">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">Quotes</h1>
           <p className="text-sm text-gray-500 max-w-lg">
@@ -23,7 +25,16 @@ export default function Page() {
           </p>
         </div>
 
-        {/* Todo: header buttons will go here (Edit Prompt, Add Quote) */}
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="lg">
+            <PencilIcon className="size-4" />
+            Edit prompt
+          </Button>
+          <Button variant="default" size="lg">
+            <PlusIcon className="size-4" />
+            Add quote
+          </Button>
+        </div>
       </div>
 
       <DimensionChips attributes={SAMPLE_ATTRIBUTES} />
