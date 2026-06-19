@@ -1,8 +1,10 @@
-import { DimensionChips } from "@/features/quotes/components/ui/dimension-chips";
+import { PlusIcon } from "lucide-react";
+
 import { EditPromptDialog } from "@/features/quotes/components/edit-prompt-dialog";
+import { DimensionChips } from "@/features/quotes/components/ui/dimension-chips";
 import type { QuoteAttributes } from "@/features/quotes/types";
 import { Button } from "@repo/ui/components/ui/button";
-import { PlusIcon } from "lucide-react";
+
 
 const SAMPLE_ATTRIBUTES: QuoteAttributes = {
   mindset: "Growth",

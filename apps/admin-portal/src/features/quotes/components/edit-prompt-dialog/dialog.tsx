@@ -1,5 +1,8 @@
 "use client";
 
+import { AlignLeftIcon, PencilIcon } from "lucide-react";
+import { useState } from "react";
+
 import { Button } from "@repo/ui/components/ui/button";
 import {
   Dialog,
@@ -9,8 +12,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@repo/ui/components/ui/dialog";
-import { AlignLeftIcon, PencilIcon } from "lucide-react";
-import { useState } from "react";
+
 import { EditPromptForm } from "./form";
 
 export function EditPromptDialog() {
