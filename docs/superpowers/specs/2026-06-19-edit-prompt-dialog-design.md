@@ -14,20 +14,26 @@ The Quotes page has an "Edit prompt" button. Clicking it opens a wide two-column
 
 ## Folder Structure
 
-All files live in a slice folder:
+`edit-prompt-dialog` lives under `components/` (not `components/ui/`) because it is an interactive feature component, not a static UI primitive. Static presentational components (like `dimension-chips`) stay in `components/ui/`.
 
 ```
-features/quotes/components/ui/edit-prompt-dialog/
-  schema.ts         — Zod schema, MODELS const, types, defaultValues
-  schema.test.ts    — schema unit tests (Node env, no DOM)
-  form.tsx          — EditPromptForm component (pure form, no dialog)
-  form.test.tsx     — form component tests (jsdom, no dialog wrapping)
-  dialog.tsx        — EditPromptDialog (Dialog shell + trigger, wraps EditPromptForm)
-  dialog.test.tsx   — dialog open/close integration tests (jsdom)
-  index.ts          — re-exports EditPromptDialog
+features/quotes/
+  constants.ts      — shared feature-level constants (DIMENSION_VALUES, etc.)
+  types.ts          — existing types (DimensionKey, QuoteAttributes, DIMENSIONS, DIMENSION_ORDER)
+  components/
+    ui/
+      dimension-chips.tsx   — existing static component
+    edit-prompt-dialog/
+      schema.ts         — Zod schema, MODELS const, types, defaultValues
+      schema.test.ts    — schema unit tests (Node env, no DOM)
+      form.tsx          — EditPromptForm component (pure form, no dialog)
+      form.test.tsx     — form component tests (jsdom, no dialog wrapping)
+      dialog.tsx        — EditPromptDialog (Dialog shell + trigger, wraps EditPromptForm)
+      dialog.test.tsx   — dialog open/close integration tests (jsdom)
+      index.ts          — re-exports EditPromptDialog
 ```
 
-`quotes/page.tsx` imports from the index: `import { EditPromptDialog } from "@/features/quotes/components/ui/edit-prompt-dialog"`.
+`quotes/page.tsx` imports from the index: `import { EditPromptDialog } from "@/features/quotes/components/edit-prompt-dialog"`.
 
 ---
 
@@ -94,6 +100,28 @@ export function EditPromptDialog() {
 ```
 
 Dialog tests focus only on: trigger renders, dialog opens/closes, form resets on reopen.
+
+---
+
+## Shared Constants (`features/quotes/constants.ts`)
+
+A new feature-level constants file, importable by any component in the `quotes` feature.
+
+```ts
+import type { DimensionKey } from "./types";
+
+export const DIMENSION_VALUES: Record<DimensionKey, string[]> = {
+  mindset:    ["Growth", "Fixed"],
+  worldview:  ["Stoic", "Optimistic", "Realist"],
+  motivation: ["Intrinsic", "Extrinsic"],
+  tone:       ["Energizing", "Calming", "Reflective", "Urgent", "Tender", "Resolute", "Empowering"],
+  theme:      ["Resilience", "Discipline", "Gratitude", "Courage", "Focus", "Perseverance", "Perspective", "Contentment", "Self-belief", "Agency"],
+  timeframe:  ["Present", "Future", "Past"],
+  agency:     ["Self", "Collective"],
+};
+```
+
+`form.tsx` imports `DIMENSION_VALUES` from here. Any future component needing these values (e.g. a filter panel, a tag editor) imports from the same place.
 
 ---
 
@@ -164,19 +192,7 @@ Card selected state: purple border + purple radio dot.
 - Read-only display, no form binding.
 - Iterates `DIMENSION_ORDER` from `features/quotes/types.ts`
 - Each dimension: colored dot + label + allowed values as chips (`DIMENSIONS[key].chipClassName`)
-- Allowed values constant (defined in `form.tsx`):
-
-```ts
-const DIMENSION_VALUES: Record<DimensionKey, string[]> = {
-  mindset:    ["Growth", "Fixed"],
-  worldview:  ["Stoic", "Optimistic", "Realist"],
-  motivation: ["Intrinsic", "Extrinsic"],
-  tone:       ["Energizing", "Calming", "Reflective", "Urgent", "Tender", "Resolute", "Empowering"],
-  theme:      ["Resilience", "Discipline", "Gratitude", "Courage", "Focus", "Perseverance", "Perspective", "Contentment", "Self-belief", "Agency"],
-  timeframe:  ["Present", "Future", "Past"],
-  agency:     ["Self", "Collective"],
-};
-```
+- Allowed values imported from `features/quotes/constants.ts` as `DIMENSION_VALUES`
 
 ---
 
@@ -269,13 +285,14 @@ Render `<EditPromptDialog />`. Focus on open/close and form reset — not re-tes
 
 | File | Change |
 |---|---|
-| `features/quotes/components/ui/edit-prompt-dialog/schema.ts` | **New** — Zod schema, `MODELS`, types, `defaultValues` |
-| `features/quotes/components/ui/edit-prompt-dialog/schema.test.ts` | **New** — schema unit tests |
-| `features/quotes/components/ui/edit-prompt-dialog/form.tsx` | **New** — `EditPromptForm` (pure form, no dialog) |
-| `features/quotes/components/ui/edit-prompt-dialog/form.test.tsx` | **New** — form component tests |
-| `features/quotes/components/ui/edit-prompt-dialog/dialog.tsx` | **New** — `EditPromptDialog` (dialog shell + trigger) |
-| `features/quotes/components/ui/edit-prompt-dialog/dialog.test.tsx` | **New** — dialog open/close tests |
-| `features/quotes/components/ui/edit-prompt-dialog/index.ts` | **New** — re-exports `EditPromptDialog` |
+| `features/quotes/constants.ts` | **New** — `DIMENSION_VALUES` (shared feature-level constant) |
+| `features/quotes/components/edit-prompt-dialog/schema.ts` | **New** — Zod schema, `MODELS`, types, `defaultValues` |
+| `features/quotes/components/edit-prompt-dialog/schema.test.ts` | **New** — schema unit tests |
+| `features/quotes/components/edit-prompt-dialog/form.tsx` | **New** — `EditPromptForm` (pure form, no dialog) |
+| `features/quotes/components/edit-prompt-dialog/form.test.tsx` | **New** — form component tests |
+| `features/quotes/components/edit-prompt-dialog/dialog.tsx` | **New** — `EditPromptDialog` (dialog shell + trigger) |
+| `features/quotes/components/edit-prompt-dialog/dialog.test.tsx` | **New** — dialog open/close tests |
+| `features/quotes/components/edit-prompt-dialog/index.ts` | **New** — re-exports `EditPromptDialog` |
 | `app/(app)/quotes/page.tsx` | **Edit** — swap Button for `<EditPromptDialog />` |
 
 **New packages required** (none currently in `apps/admin-portal`):
