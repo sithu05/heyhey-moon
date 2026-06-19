@@ -2,6 +2,18 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Pre-PR checklist
+
+Always run these before opening a pull request:
+
+```bash
+pnpm run lint       # enforces --max-warnings 0; any warning fails
+pnpm check-types    # full tsc across all apps and packages
+pnpm test           # full test suite via Turbo
+```
+
+Fix all failures before pushing.
+
 ## Commands
 
 ```bash
