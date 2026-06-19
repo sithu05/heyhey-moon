@@ -8,6 +8,7 @@ export const uiConfig = mergeConfig(
     plugins: [react()],
     test: {
       environment: "jsdom",
+      globals: true,
     },
   }),
 );
