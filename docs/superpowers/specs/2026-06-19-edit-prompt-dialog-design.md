@@ -25,7 +25,7 @@ One `"use client"` component: `EditPromptDialog`. Exported and rendered directly
 ## Component Structure
 
 ```
-<Dialog onOpenChange={(open) => open && form.reset(defaultValues)}>
+<Dialog open={open} onOpenChange={(o) => { setOpen(o); if (o) form.reset(defaultValues); }}>
   <DialogTrigger asChild>
     <Button variant="outline" size="lg">
       <PencilIcon /> Edit prompt
@@ -66,14 +66,14 @@ const defaultValues: EditPromptFormValues = {
 
 **Validation:** `prompt` must be non-empty (required rule). No validation on `model` (always has a default).
 
-**Reset on open:** `onOpenChange` on `<Dialog>` calls `form.reset(defaultValues)` when `open === true`. This means re-opening the dialog always starts from defaults — no stale edits leak across sessions.
+**Open state:** Controlled via `const [open, setOpen] = useState(false)` passed as `open` / `onOpenChange={setOpen}` to `<Dialog>`. This enables programmatic close after submit without ref gymnastics.
+
+**Reset on open:** `onOpenChange` calls `form.reset(defaultValues)` when `open === true`. Re-opening always starts from defaults — no stale edits leak across sessions.
 
 **Handlers:**
-- `onSubmit` (bound to "Save prompt"): calls `dialogClose()` — no data emitted. Uses a `ref` on `DialogClose`/`DialogPrimitive.Close` or a controlled close pattern to close the dialog programmatically after submit.
+- `onSubmit` (bound to "Save prompt"): calls `setOpen(false)` — no data emitted.
 - "Reset to default" button (`type="button"`): calls `form.reset(defaultValues)`.
-- "Cancel" button: `<DialogClose asChild>` wrapping a `<Button variant="outline">`.
-
-> **Closing after submit:** Since the dialog is uncontrolled, programmatic close on submit is handled by rendering a hidden `<DialogClose>` ref, or by switching to a minimal controlled pattern (`open` + `onOpenChange` props on `<Dialog>`). Implementation detail: prefer the controlled pattern to avoid ref gymnastics — add `const [open, setOpen] = useState(false)` and pass `open`/`onOpenChange={setOpen}` to `<Dialog>`. `onSubmit` sets `open` to false.
+- "Cancel" button: `<DialogClose asChild>` wrapping a `<Button variant="outline">` — Radix handles close automatically.
 
 ---
 
