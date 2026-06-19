@@ -62,6 +62,7 @@ describe("EditPromptForm", () => {
     await waitFor(() => {
       expect(handleSubmit).toHaveBeenCalledWith(
         expect.objectContaining({ model: "claude-sonnet-4-5" }),
+        expect.anything(), // SyntheticEvent passed by react-hook-form's handleSubmit
       );
     });
   });

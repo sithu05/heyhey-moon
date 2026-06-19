@@ -41,7 +41,7 @@ export function EditPromptDialog() {
           Edit prompt
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-w-4xl sm:max-w-4xl">
+      <DialogContent size="lg">
         <DialogHeader className="flex-row items-center gap-3 space-y-0">
           <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted">
             <AlignLeftIcon className="size-4" />

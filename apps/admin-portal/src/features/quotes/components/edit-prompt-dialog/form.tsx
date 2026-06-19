@@ -56,7 +56,7 @@ export function EditPromptForm({ form, onSubmit, onReset }: EditPromptFormProps)
   } = form;
 
   return (
-    <form onSubmit={handleSubmit((values) => onSubmit(values))}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex gap-6">
         {/* Left: prompt textarea */}
         <div className="flex flex-1 flex-col gap-2">
@@ -100,6 +100,7 @@ export function EditPromptForm({ form, onSubmit, onReset }: EditPromptFormProps)
                 <RadioGroup
                   value={field.value}
                   onValueChange={field.onChange}
+                  onBlur={field.onBlur}
                   className="gap-2"
                 >
                   {MODELS.map((modelId) => {
@@ -157,8 +158,7 @@ export function EditPromptForm({ form, onSubmit, onReset }: EditPromptFormProps)
                 One tag per dimension — Tone allows up to three.
               </p>
             </div>
-            <div className="flex flex-col gap-3">
-              {DIMENSION_ORDER.map((key) => {
+            {DIMENSION_ORDER.map((key) => {
                 const dim = DIMENSIONS[key];
                 return (
                   <div key={key} className="flex flex-col gap-1">
@@ -184,8 +184,7 @@ export function EditPromptForm({ form, onSubmit, onReset }: EditPromptFormProps)
                     </div>
                   </div>
                 );
-              })}
-            </div>
+            })}
           </div>
         </div>
       </div>
