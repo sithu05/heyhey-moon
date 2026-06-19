@@ -50,21 +50,46 @@ All sub-sections are inline (not split into separate files) — the component is
 
 ## Form
 
-**Library:** `react-hook-form` (`useForm<EditPromptFormValues>`)
+**Library:** `react-hook-form` + `zodResolver` from `@hookform/resolvers/zod`
+
+### Zod Schema
+
+Defined in a dedicated file so it can be imported independently by tests:
+
+```
+apps/admin-portal/src/features/quotes/components/ui/edit-prompt-dialog.schema.ts
+```
 
 ```ts
-type EditPromptFormValues = {
-  prompt: string;
-  model: "claude-sonnet-4-5" | "claude-haiku-4-5" | "gpt-4o" | "gemini-2-5-pro";
-};
+import { z } from "zod";
 
-const defaultValues: EditPromptFormValues = {
-  prompt: DEFAULT_PROMPT,   // hardcoded constant in the same file
+export const MODELS = [
+  "claude-sonnet-4-5",
+  "claude-haiku-4-5",
+  "gpt-4o",
+  "gemini-2-5-pro",
+] as const;
+
+export type ModelId = (typeof MODELS)[number];
+
+export const editPromptSchema = z.object({
+  prompt: z.string().min(1, "Prompt cannot be empty"),
+  model: z.enum(MODELS),
+});
+
+export type EditPromptFormValues = z.infer<typeof editPromptSchema>;
+
+export const defaultValues: EditPromptFormValues = {
+  prompt: DEFAULT_PROMPT,   // imported from a sibling constants file
   model: "claude-sonnet-4-5",
 };
 ```
 
-**Validation:** `prompt` must be non-empty (required rule). No validation on `model` (always has a default).
+`useForm` is wired with `zodResolver(editPromptSchema)`.
+
+**Validation rules:**
+- `prompt`: must be non-empty (`min(1)`) — error message: "Prompt cannot be empty"
+- `model`: must be one of the four enum values — always satisfied since the default is valid and the UI only presents valid options
 
 **Open state:** Controlled via `const [open, setOpen] = useState(false)` passed as `open` / `onOpenChange={setOpen}` to `<Dialog>`. This enables programmatic close after submit without ref gymnastics.
 
@@ -81,7 +106,7 @@ const defaultValues: EditPromptFormValues = {
 
 - Label: `PROMPT` (uppercase, muted, small) + helper text "Define how the model reads, weighs and tags each quote."
 - `<Textarea>` from `@repo/ui`: monospace font, tall (min ~300px, grows with content or fixed tall), full width
-- Wired via `{...register("prompt", { required: true })}`
+- Wired via `{...register("prompt")}`
 - Error state: red border + inline error message if submitted empty
 
 ---
@@ -162,14 +187,53 @@ The page remains a server component (no `"use client"` needed).
 
 ---
 
+## Testing
+
+### Schema tests — `edit-prompt-dialog.schema.test.ts`
+
+Unit tests run in Node env (no DOM needed). Import `editPromptSchema` and `defaultValues` directly.
+
+| Test | Input | Expected |
+|---|---|---|
+| valid default values pass | `defaultValues` | `success: true` |
+| valid custom prompt passes | `{ prompt: "Custom text", model: "gpt-4o" }` | `success: true` |
+| empty prompt fails | `{ prompt: "", model: "claude-sonnet-4-5" }` | `error` on `prompt`, message "Prompt cannot be empty" |
+| whitespace-only prompt fails | `{ prompt: "   ", model: "claude-sonnet-4-5" }` | `error` on `prompt` — use `z.string().trim().min(1, ...)` |
+| invalid model fails | `{ prompt: "x", model: "unknown-model" }` | `error` on `model` |
+| all four valid model values pass | each of `MODELS` | `success: true` |
+
+> **Note on whitespace:** use `.trim().min(1, ...)` on the prompt field so `"   "` is rejected.
+
+### Component tests — `edit-prompt-dialog.test.tsx`
+
+Integration tests run in jsdom env with React Testing Library. Test behaviour, not implementation.
+
+| Test | Action | Expected |
+|---|---|---|
+| renders trigger button | render `<EditPromptDialog />` | button with text "Edit prompt" is visible |
+| dialog is closed by default | render | dialog content is not in the DOM |
+| clicking trigger opens dialog | click "Edit prompt" | dialog title "AI tagging prompt" appears |
+| textarea contains default prompt | open dialog | textarea value equals `DEFAULT_PROMPT` |
+| model defaults to Claude Sonnet | open dialog | "Claude Sonnet 4.5" radio is checked |
+| save with valid data closes dialog | open, click "Save prompt" | dialog content leaves the DOM |
+| save with empty prompt shows error | open, clear textarea, click "Save prompt" | error message "Prompt cannot be empty" appears, dialog stays open |
+| reset restores defaults after edits | open, change textarea, click "Reset to default" | textarea value equals `DEFAULT_PROMPT` |
+| cancel closes dialog | open, click "Cancel" | dialog content leaves the DOM |
+| re-opening after edit starts fresh | open, edit prompt, cancel, reopen | textarea value equals `DEFAULT_PROMPT` |
+
+---
+
 ## File Locations Summary
 
 | File | Change |
 |---|---|
+| `features/quotes/components/ui/edit-prompt-dialog.schema.ts` | **New** — Zod schema, `MODELS`, `EditPromptFormValues`, `defaultValues` |
+| `features/quotes/components/ui/edit-prompt-dialog.schema.test.ts` | **New** — schema unit tests |
 | `features/quotes/components/ui/edit-prompt-dialog.tsx` | **New** — full dialog component |
+| `features/quotes/components/ui/edit-prompt-dialog.test.tsx` | **New** — component integration tests |
 | `app/(app)/quotes/page.tsx` | **Edit** — swap Button for `<EditPromptDialog />` |
 
-**New package required:** `react-hook-form` is not yet installed in `apps/admin-portal`. Add it before implementation:
+**New packages required** (none are currently in `apps/admin-portal`):
 ```
-pnpm --filter admin-portal add react-hook-form
+pnpm --filter admin-portal add react-hook-form zod @hookform/resolvers
 ```
