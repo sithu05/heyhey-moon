@@ -1,15 +1,16 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 import { DialogClose } from "@repo/ui/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group";
 import { Textarea } from "@repo/ui/components/ui/textarea";
 import { cn } from "@repo/ui/lib/utils";
-import { Controller, type UseFormReturn } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { DIMENSION_VALUES } from "../../constants";
 import { DIMENSION_ORDER, DIMENSIONS } from "../../types";
-import { MODELS, type EditPromptFormValues } from "./schema";
+import { defaultValues, editPromptSchema, MODELS, type EditPromptFormValues } from "./schema";
 
 const MODEL_META: Record<
   (typeof MODELS)[number],
@@ -42,18 +43,20 @@ const MODEL_META: Record<
 };
 
 type EditPromptFormProps = {
-  form: UseFormReturn<EditPromptFormValues>;
   onSubmit: (values: EditPromptFormValues) => void;
-  onReset: () => void;
 };
 
-export function EditPromptForm({ form, onSubmit, onReset }: EditPromptFormProps) {
+export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
   const {
     register,
     control,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = form;
+  } = useForm<EditPromptFormValues>({
+    resolver: zodResolver(editPromptSchema),
+    defaultValues,
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -191,7 +194,7 @@ export function EditPromptForm({ form, onSubmit, onReset }: EditPromptFormProps)
 
       {/* Footer */}
       <div className="-mx-4 -mb-4 mt-4 flex items-center justify-between rounded-b-xl border-t bg-muted/50 px-4 py-3">
-        <Button type="button" variant="ghost" className="text-primary" onClick={onReset}>
+        <Button type="button" variant="ghost" className="text-primary" onClick={() => reset(defaultValues)}>
           Reset to default
         </Button>
         <div className="flex gap-2">

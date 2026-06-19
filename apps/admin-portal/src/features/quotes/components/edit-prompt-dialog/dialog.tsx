@@ -1,6 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@repo/ui/components/ui/button";
 import {
   Dialog,
@@ -12,29 +11,17 @@ import {
 } from "@repo/ui/components/ui/dialog";
 import { AlignLeftIcon, PencilIcon } from "lucide-react";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { EditPromptForm } from "./form";
-import { defaultValues, editPromptSchema, type EditPromptFormValues } from "./schema";
 
 export function EditPromptDialog() {
   const [open, setOpen] = useState(false);
 
-  const form = useForm<EditPromptFormValues>({
-    resolver: zodResolver(editPromptSchema),
-    defaultValues,
-  });
-
-  function handleOpenChange(next: boolean) {
-    setOpen(next);
-    if (next) form.reset(defaultValues);
-  }
-
-  function handleSubmit(_values: EditPromptFormValues) {
+  function handleSubmit() {
     setOpen(false);
   }
 
   return (
-    <Dialog open={open} onOpenChange={handleOpenChange}>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline" size="lg">
           <PencilIcon className="size-4" />
@@ -53,11 +40,7 @@ export function EditPromptDialog() {
             </DialogDescription>
           </div>
         </DialogHeader>
-        <EditPromptForm
-          form={form}
-          onSubmit={handleSubmit}
-          onReset={() => form.reset(defaultValues)}
-        />
+        {open && <EditPromptForm onSubmit={handleSubmit} />}
       </DialogContent>
     </Dialog>
   );

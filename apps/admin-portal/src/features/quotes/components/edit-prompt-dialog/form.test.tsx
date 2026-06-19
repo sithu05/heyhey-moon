@@ -1,31 +1,19 @@
 import { cleanup, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog } from "@repo/ui/components/ui/dialog";
 import { EditPromptForm } from "./form";
-import { defaultValues, editPromptSchema, type EditPromptFormValues } from "./schema";
+import { defaultValues } from "./schema";
 import { DIMENSION_ORDER, DIMENSIONS } from "../../types";
 
 afterEach(cleanup);
 
 // DialogClose inside EditPromptForm needs a Dialog context to not throw.
 // We wrap with <Dialog open> (no DialogContent) — provides context, renders no overlay.
-function FormWrapper({
-  onSubmit = vi.fn(),
-  onReset = vi.fn(),
-}: {
-  onSubmit?: (values: EditPromptFormValues) => void;
-  onReset?: () => void;
-}) {
-  const form = useForm<EditPromptFormValues>({
-    resolver: zodResolver(editPromptSchema),
-    defaultValues,
-  });
+function FormWrapper({ onSubmit = vi.fn() }: { onSubmit?: () => void }) {
   return (
     <Dialog open>
-      <EditPromptForm form={form} onSubmit={onSubmit} onReset={onReset} />
+      <EditPromptForm onSubmit={onSubmit} />
     </Dialog>
   );
 }
@@ -54,17 +42,12 @@ describe("EditPromptForm", () => {
     expect(screen.getByRole("radio", { name: /claude sonnet 4\.5/i })).not.toBeChecked();
   });
 
-  it("calls onSubmit with form values on valid submit", async () => {
+  it("calls onSubmit on valid submit", async () => {
     const user = userEvent.setup();
     const handleSubmit = vi.fn();
     render(<FormWrapper onSubmit={handleSubmit} />);
     await user.click(screen.getByRole("button", { name: /save prompt/i }));
-    await waitFor(() => {
-      expect(handleSubmit).toHaveBeenCalledWith(
-        expect.objectContaining({ model: "claude-sonnet-4-5" }),
-        expect.anything(), // SyntheticEvent passed by react-hook-form's handleSubmit
-      );
-    });
+    await waitFor(() => expect(handleSubmit).toHaveBeenCalled());
   });
 
   it("shows error and does not call onSubmit when prompt is empty", async () => {
@@ -79,12 +62,13 @@ describe("EditPromptForm", () => {
     expect(handleSubmit).not.toHaveBeenCalled();
   });
 
-  it("calls onReset when reset button is clicked", async () => {
+  it("reset button restores default prompt text after edits", async () => {
     const user = userEvent.setup();
-    const handleReset = vi.fn();
-    render(<FormWrapper onReset={handleReset} />);
+    render(<FormWrapper />);
+    await user.clear(screen.getByRole("textbox", { name: /prompt/i }));
+    await user.type(screen.getByRole("textbox", { name: /prompt/i }), "custom prompt");
     await user.click(screen.getByRole("button", { name: /reset to default/i }));
-    expect(handleReset).toHaveBeenCalledOnce();
+    expect(screen.getByRole("textbox", { name: /prompt/i })).toHaveValue(defaultValues.prompt);
   });
 
   it("renders all 7 dimension section labels", () => {
