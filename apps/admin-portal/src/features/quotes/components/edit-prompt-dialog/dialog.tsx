@@ -29,7 +29,9 @@ export function EditPromptDialog({
 
   function setIsOpen(value: boolean) {
     onOpenChange?.(value);
-    setOpen(value);
+    if (controlledOpen === undefined) {
+      setOpen(value);
+    }
   }
 
   function handleSubmit() {

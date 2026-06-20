@@ -15,10 +15,12 @@ import {
   type AddQuoteFormValues,
 } from "./schema";
 
+const resolver = zodResolver(addQuoteSchema);
+
 const LANGUAGES = [
-  { value: "en" as const, code: "EN", name: "English" },
-  { value: "th" as const, code: "TH", name: "ไทย" },
-  { value: "my" as const, code: "MY", name: "မြန်မာ" },
+  { value: "en" as const, name: "English" },
+  { value: "th" as const, name: "ไทย" },
+  { value: "my" as const, name: "မြန်မာ" },
 ];
 
 type AddQuoteFormProps = {
@@ -34,7 +36,7 @@ export function AddQuoteForm({ onSubmit, onEditPrompt }: AddQuoteFormProps) {
     setValue,
     formState: { errors },
   } = useForm<AddQuoteFormValues>({
-    resolver: zodResolver(addQuoteSchema),
+    resolver,
     defaultValues,
   });
 
@@ -105,7 +107,8 @@ export function AddQuoteForm({ onSubmit, onEditPrompt }: AddQuoteFormProps) {
                     setValue("language", lang.value, { shouldValidate: true })
                   }
                 >
-                  <span className="font-bold">{lang.code}</span> {lang.name}
+                  <span className="font-bold">{lang.value.toUpperCase()}</span>{" "}
+                  {lang.name}
                 </Button>
               );
             })}

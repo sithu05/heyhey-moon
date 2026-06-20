@@ -21,7 +21,7 @@ export default function Page() {
   const [editOpen, setEditOpen] = useState(false);
 
   return (
-    <div className="">
+    <div>
       <div className="mb-8 flex items-end justify-between">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">Quotes</h1>
