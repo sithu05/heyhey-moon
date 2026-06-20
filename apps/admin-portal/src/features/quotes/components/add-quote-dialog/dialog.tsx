@@ -14,13 +14,11 @@ import {
 } from "@repo/ui/components/ui/dialog";
 
 import { AddQuoteForm } from "./form";
-import { type AddQuoteFormValues } from "./types";
 
 export function AddQuoteDialog() {
   const [open, setOpen] = useState(false);
 
-  const handleSubmit = (values: AddQuoteFormValues) => {
-    // onSubmit(values);
+  const handleSubmit = () => {
     setOpen(false);
   };
 

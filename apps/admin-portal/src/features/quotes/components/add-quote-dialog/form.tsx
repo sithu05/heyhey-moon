@@ -46,7 +46,7 @@ export function AddQuoteForm({ onSubmit }: AddQuoteFormProps) {
           control={control}
           name="quote"
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.isDirty} className="col-span-2">
+            <Field data-invalid={fieldState.invalid} className="col-span-2">
               <FieldLabel htmlFor="quote">Quote</FieldLabel>
               <Textarea
                 id="quote"
@@ -64,7 +64,7 @@ export function AddQuoteForm({ onSubmit }: AddQuoteFormProps) {
           control={control}
           name="author"
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.isDirty}>
+            <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="author">Author</FieldLabel>
               <Input
                 id="author"
@@ -79,9 +79,9 @@ export function AddQuoteForm({ onSubmit }: AddQuoteFormProps) {
 
         <Controller
           control={control}
-          name="author"
+          name="source"
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.isDirty}>
+            <Field data-invalid={fieldState.invalid}>
               <FieldLabel htmlFor="source">Source</FieldLabel>
               <Input
                 id="source"
@@ -128,7 +128,7 @@ export function AddQuoteForm({ onSubmit }: AddQuoteFormProps) {
           control={control}
           name="context"
           render={({ field, fieldState }) => (
-            <Field data-invalid={fieldState.isDirty} className="col-span-2">
+            <Field data-invalid={fieldState.invalid} className="col-span-2">
               <div className="flex justify-between">
                 <FieldLabel htmlFor="context">Context</FieldLabel>
 

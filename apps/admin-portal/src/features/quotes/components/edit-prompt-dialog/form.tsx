@@ -6,7 +6,12 @@ import { Controller, useForm } from "react-hook-form";
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
 import { DialogClose, DialogFooter } from "@repo/ui/components/ui/dialog";
-import { Field, FieldGroup, FieldLabel } from "@repo/ui/components/ui/field";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@repo/ui/components/ui/field";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group";
 import { ScrollArea } from "@repo/ui/components/ui/scroll-area";
 import { Textarea } from "@repo/ui/components/ui/textarea";
@@ -73,7 +78,7 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
             name="prompt"
             render={({ field, fieldState }) => (
               <Field
-                data-invalid={fieldState.isDirty}
+                data-invalid={fieldState.invalid}
                 className="flex flex-col flex-1 min-h-0"
               >
                 <div>
@@ -87,6 +92,9 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
                   className="resize-none font-mono text-sm h-full"
                   {...field}
                 />
+                {fieldState.invalid && (
+                  <FieldError errors={[fieldState.error]} />
+                )}
               </Field>
             )}
           />
@@ -97,7 +105,7 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
             control={control}
             name="model"
             render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.isDirty}>
+              <Field data-invalid={fieldState.invalid}>
                 <div>
                   <FieldLabel htmlFor="model">Model</FieldLabel>
                   <p className="text-xs text-muted-foreground">

@@ -1,6 +1,6 @@
 "use client";
 
-import { AlignLeftIcon, PencilIcon } from "lucide-react";
+import { PencilIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@repo/ui/components/ui/button";
@@ -48,7 +48,7 @@ export function EditPromptDialog({
       </DialogTrigger>
       <DialogContent className="p-0 gap-0 sm:max-w-4xl">
         <DialogHeader className="gap-0 p-5 border-b">
-          <DialogTitle className="text-lg text-semibold">
+          <DialogTitle className="text-lg font-semibold">
             AI tagging prompt
           </DialogTitle>
           <DialogDescription className="text-sm">
