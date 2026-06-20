@@ -25,7 +25,7 @@ export function EditPromptDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="lg">
+        <Button variant="outline">
           <PencilIcon className="size-4" />
           Edit prompt
         </Button>

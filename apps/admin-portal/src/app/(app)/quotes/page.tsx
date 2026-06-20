@@ -5,7 +5,6 @@ import { DimensionChips } from "@/features/quotes/components/ui/dimension-chips"
 import type { QuoteAttributes } from "@/features/quotes/types";
 import { Button } from "@repo/ui/components/ui/button";
 
-
 const SAMPLE_ATTRIBUTES: QuoteAttributes = {
   mindset: "Growth",
   worldview: "Stoic",
@@ -28,9 +27,9 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3.5">
           <EditPromptDialog />
-          <Button variant="default" size="lg">
+          <Button variant="default">
             <PlusIcon className="size-4" />
             Add quote
           </Button>
