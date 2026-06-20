@@ -10,7 +10,9 @@ afterEach(cleanup);
 describe("EditPromptDialog", () => {
   it("renders the trigger button", () => {
     render(<EditPromptDialog />);
-    expect(screen.getByRole("button", { name: /edit prompt/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /edit prompt/i }),
+    ).toBeInTheDocument();
   });
 
   it("dialog is closed by default", () => {
@@ -58,9 +60,13 @@ describe("EditPromptDialog", () => {
 
     // Cancel and reopen
     await user.click(screen.getByRole("button", { name: /cancel/i }));
-    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+    );
     await user.click(screen.getByRole("button", { name: /edit prompt/i }));
 
-    expect(screen.getByRole("textbox", { name: /prompt/i })).toHaveValue(defaultValues.prompt);
+    expect(screen.getByRole("textbox", { name: /prompt/i })).toHaveValue(
+      defaultValues.prompt,
+    );
   });
 });

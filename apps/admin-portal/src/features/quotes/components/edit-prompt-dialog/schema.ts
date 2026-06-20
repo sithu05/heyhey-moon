@@ -4,9 +4,9 @@ import { DIMENSION_VALUES } from "../../constants";
 import { DIMENSION_ORDER, DIMENSIONS } from "../../types";
 
 function buildAllowedValues(): string {
-  return DIMENSION_ORDER
-    .map((key) => `- ${DIMENSIONS[key].label}: ${DIMENSION_VALUES[key].join(", ")}`)
-    .join("\n");
+  return DIMENSION_ORDER.map(
+    (key) => `- ${DIMENSIONS[key].label}: ${DIMENSION_VALUES[key].join(", ")}`,
+  ).join("\n");
 }
 
 export const DEFAULT_PROMPT = `You are Zello's quote classifier. Read the quote together with its author and source, then assign tags across the seven psychological dimensions defined below.

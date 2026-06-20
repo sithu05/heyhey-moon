@@ -15,15 +15,31 @@ import {
 
 import { EditPromptForm } from "./form";
 
-export function EditPromptDialog() {
+type EditPromptDialogProps = {
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+};
+
+export function EditPromptDialog({
+  open: controlledOpen,
+  onOpenChange,
+}: EditPromptDialogProps = {}) {
   const [open, setOpen] = useState(false);
+  const isOpen = controlledOpen !== undefined ? controlledOpen : open;
+
+  function setIsOpen(value: boolean) {
+    onOpenChange?.(value);
+    if (controlledOpen === undefined) {
+      setOpen(value);
+    }
+  }
 
   function handleSubmit() {
-    setOpen(false);
+    setIsOpen(false);
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <PencilIcon className="size-4" />
@@ -42,7 +58,7 @@ export function EditPromptDialog() {
             </DialogDescription>
           </div>
         </DialogHeader>
-        {open && <EditPromptForm onSubmit={handleSubmit} />}
+        {isOpen && <EditPromptForm onSubmit={handleSubmit} />}
       </DialogContent>
     </Dialog>
   );

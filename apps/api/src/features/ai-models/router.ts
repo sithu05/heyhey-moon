@@ -18,44 +18,36 @@ function toResponse(model: typeof aiModels.$inferSelect) {
   return { ...rest, apiKeyMasked: maskApiKey(apiKey) };
 }
 
-router.get(
-  "/",
-  zValidator("query", listAiModelsQuerySchema),
-  async (c) => {
-    const { provider, isActive } = c.req.valid("query");
+router.get("/", zValidator("query", listAiModelsQuerySchema), async (c) => {
+  const { provider, isActive } = c.req.valid("query");
 
-    const conditions: SQL[] = [];
+  const conditions: SQL[] = [];
 
-    if (provider !== undefined) {
-      conditions.push(eq(aiModels.provider, provider));
-    }
+  if (provider !== undefined) {
+    conditions.push(eq(aiModels.provider, provider));
+  }
 
-    if (isActive !== undefined) {
-      conditions.push(eq(aiModels.isActive, isActive));
-    }
+  if (isActive !== undefined) {
+    conditions.push(eq(aiModels.isActive, isActive));
+  }
 
-    const allModels = await db
-      .select()
-      .from(aiModels)
-      .where(and(...conditions))
-      .orderBy(desc(aiModels.createdAt));
+  const allModels = await db
+    .select()
+    .from(aiModels)
+    .where(and(...conditions))
+    .orderBy(desc(aiModels.createdAt));
 
-    return c.json(allModels.map(toResponse));
-  },
-);
+  return c.json(allModels.map(toResponse));
+});
 
-router.get(
-  "/:id",
-  zValidator("param", idParamSchema),
-  async (c) => {
-    const { id } = c.req.valid("param");
+router.get("/:id", zValidator("param", idParamSchema), async (c) => {
+  const { id } = c.req.valid("param");
 
-    const [model] = await db.select().from(aiModels).where(eq(aiModels.id, id));
+  const [model] = await db.select().from(aiModels).where(eq(aiModels.id, id));
 
-    if (!model) {
-      return c.json({ error: "AI model not found" }, 404);
-    }
+  if (!model) {
+    return c.json({ error: "AI model not found" }, 404);
+  }
 
-    return c.json(toResponse(model));
-  },
-);
+  return c.json(toResponse(model));
+});

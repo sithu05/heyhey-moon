@@ -18,7 +18,9 @@ const SAMPLE_ATTRIBUTES: QuoteAttributes = {
 
 describe("DimensionChips", () => {
   test("renders one chip per dimension value, in dimension order", () => {
-    const { container } = render(<DimensionChips attributes={SAMPLE_ATTRIBUTES} />);
+    const { container } = render(
+      <DimensionChips attributes={SAMPLE_ATTRIBUTES} />,
+    );
 
     const chips = container.querySelectorAll('[data-slot="badge"]');
     expect(Array.from(chips).map((chip) => chip.textContent)).toEqual([
@@ -34,7 +36,9 @@ describe("DimensionChips", () => {
   });
 
   test("renders both values for a multi-value dimension like tone", () => {
-    const { getAllByText } = render(<DimensionChips attributes={SAMPLE_ATTRIBUTES} />);
+    const { getAllByText } = render(
+      <DimensionChips attributes={SAMPLE_ATTRIBUTES} />,
+    );
 
     expect(getAllByText("Energizing")).toHaveLength(1);
     expect(getAllByText("Resolute")).toHaveLength(1);

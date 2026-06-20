@@ -1,9 +1,11 @@
-import { PlusIcon } from "lucide-react";
+"use client";
 
+import { useState } from "react";
+
+import { AddQuoteDialog } from "@/features/quotes/components/add-quote-dialog";
 import { EditPromptDialog } from "@/features/quotes/components/edit-prompt-dialog";
 import { DimensionChips } from "@/features/quotes/components/ui/dimension-chips";
 import type { QuoteAttributes } from "@/features/quotes/types";
-import { Button } from "@repo/ui/components/ui/button";
 
 const SAMPLE_ATTRIBUTES: QuoteAttributes = {
   mindset: "Growth",
@@ -16,8 +18,10 @@ const SAMPLE_ATTRIBUTES: QuoteAttributes = {
 };
 
 export default function Page() {
+  const [editOpen, setEditOpen] = useState(false);
+
   return (
-    <div className="">
+    <div>
       <div className="mb-8 flex items-end justify-between">
         <div className="space-y-2">
           <h1 className="text-2xl font-semibold">Quotes</h1>
@@ -28,11 +32,13 @@ export default function Page() {
         </div>
 
         <div className="flex items-center gap-3.5">
-          <EditPromptDialog />
-          <Button variant="default">
-            <PlusIcon className="size-4" />
-            Add quote
-          </Button>
+          <EditPromptDialog open={editOpen} onOpenChange={setEditOpen} />
+          <AddQuoteDialog
+            onSubmit={() => {
+              // no-op: frontend-only
+            }}
+            onEditPrompt={() => setEditOpen(true)}
+          />
         </div>
       </div>
 

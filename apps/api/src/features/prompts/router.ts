@@ -14,35 +14,31 @@ import {
 
 export const router = new Hono();
 
-router.get(
-  "/",
-  zValidator("query", listPromptsQuerySchema),
-  async (c) => {
-    const { category, type, isActive } = c.req.valid("query");
+router.get("/", zValidator("query", listPromptsQuerySchema), async (c) => {
+  const { category, type, isActive } = c.req.valid("query");
 
-    const conditions: SQL[] = [];
+  const conditions: SQL[] = [];
 
-    if (category !== undefined) {
-      conditions.push(eq(prompts.category, category));
-    }
+  if (category !== undefined) {
+    conditions.push(eq(prompts.category, category));
+  }
 
-    if (type !== undefined) {
-      conditions.push(eq(prompts.type, type));
-    }
+  if (type !== undefined) {
+    conditions.push(eq(prompts.type, type));
+  }
 
-    if (isActive !== undefined) {
-      conditions.push(eq(prompts.isActive, isActive));
-    }
+  if (isActive !== undefined) {
+    conditions.push(eq(prompts.isActive, isActive));
+  }
 
-    const allPrompts = await db
-      .select()
-      .from(prompts)
-      .where(and(...conditions))
-      .orderBy(desc(prompts.createdAt));
+  const allPrompts = await db
+    .select()
+    .from(prompts)
+    .where(and(...conditions))
+    .orderBy(desc(prompts.createdAt));
 
-    return c.json(allPrompts);
-  },
-);
+  return c.json(allPrompts);
+});
 
 router.get(
   "/lookup",
@@ -74,21 +70,17 @@ router.get(
   },
 );
 
-router.get(
-  "/:id",
-  zValidator("param", idParamSchema),
-  async (c) => {
-    const { id } = c.req.valid("param");
+router.get("/:id", zValidator("param", idParamSchema), async (c) => {
+  const { id } = c.req.valid("param");
 
-    const [prompt] = await db.select().from(prompts).where(eq(prompts.id, id));
+  const [prompt] = await db.select().from(prompts).where(eq(prompts.id, id));
 
-    if (!prompt) {
-      return c.json({ error: "Prompt not found" }, 404);
-    }
+  if (!prompt) {
+    return c.json({ error: "Prompt not found" }, 404);
+  }
 
-    return c.json(prompt);
-  },
-);
+  return c.json(prompt);
+});
 
 router.patch(
   "/:id",
@@ -130,45 +122,37 @@ router.patch(
   },
 );
 
-router.delete(
-  "/:id",
-  zValidator("param", idParamSchema),
-  async (c) => {
-    const { id } = c.req.valid("param");
+router.delete("/:id", zValidator("param", idParamSchema), async (c) => {
+  const { id } = c.req.valid("param");
 
-    const [deleted] = await db
-      .delete(prompts)
-      .where(eq(prompts.id, id))
-      .returning();
+  const [deleted] = await db
+    .delete(prompts)
+    .where(eq(prompts.id, id))
+    .returning();
 
-    if (!deleted) {
-      return c.json({ error: "Prompt not found" }, 404);
-    }
+  if (!deleted) {
+    return c.json({ error: "Prompt not found" }, 404);
+  }
 
-    return c.body(null, 204);
-  },
-);
+  return c.body(null, 204);
+});
 
-router.post(
-  "/",
-  zValidator("json", createPromptSchema),
-  async (c) => {
-    const body = c.req.valid("json");
+router.post("/", zValidator("json", createPromptSchema), async (c) => {
+  const body = c.req.valid("json");
 
-    const [model] = await db
-      .select({ id: aiModels.id })
-      .from(aiModels)
-      .where(eq(aiModels.id, body.modelId));
+  const [model] = await db
+    .select({ id: aiModels.id })
+    .from(aiModels)
+    .where(eq(aiModels.id, body.modelId));
 
-    if (!model) {
-      return c.json(
-        { error: "modelId does not reference an existing AI model" },
-        400,
-      );
-    }
+  if (!model) {
+    return c.json(
+      { error: "modelId does not reference an existing AI model" },
+      400,
+    );
+  }
 
-    const [prompt] = await db.insert(prompts).values(body).returning();
+  const [prompt] = await db.insert(prompts).values(body).returning();
 
-    return c.json(prompt, 201);
-  },
-);
+  return c.json(prompt, 201);
+});
