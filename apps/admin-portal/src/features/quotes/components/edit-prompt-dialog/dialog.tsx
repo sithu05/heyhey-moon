@@ -42,21 +42,18 @@ export function EditPromptDialog({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
-          <PencilIcon className="size-4" />
+          <PencilIcon />
           Edit prompt
         </Button>
       </DialogTrigger>
-      <DialogContent size="lg">
-        <DialogHeader className="flex-row items-center gap-3 space-y-0">
-          <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted">
-            <AlignLeftIcon className="size-4" />
-          </div>
-          <div>
-            <DialogTitle>AI tagging prompt</DialogTitle>
-            <DialogDescription>
-              Instructions the model follows when classifying every quote.
-            </DialogDescription>
-          </div>
+      <DialogContent className="p-0 gap-0 sm:max-w-4xl">
+        <DialogHeader className="gap-0 p-5 border-b">
+          <DialogTitle className="text-lg text-semibold">
+            AI tagging prompt
+          </DialogTitle>
+          <DialogDescription className="text-sm">
+            Instructions the model follows when classifying every quote.
+          </DialogDescription>
         </DialogHeader>
         {isOpen && <EditPromptForm onSubmit={handleSubmit} />}
       </DialogContent>

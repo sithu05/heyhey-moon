@@ -19,8 +19,8 @@ import {
   ToggleGroupItem,
 } from "@repo/ui/components/ui/toggle-group";
 
-import { addQuoteSchema } from "./schema";
 import { defaultValues } from "./constants";
+import { addQuoteSchema } from "./schema";
 import type { AddQuoteFormValues } from "./types";
 
 const LANGUAGES = [
