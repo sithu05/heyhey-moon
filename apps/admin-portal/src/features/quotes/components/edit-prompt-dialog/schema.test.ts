@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+
 import { MODELS, defaultValues, editPromptSchema } from "./schema";
 
 describe("editPromptSchema", () => {

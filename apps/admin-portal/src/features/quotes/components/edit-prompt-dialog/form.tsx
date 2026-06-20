@@ -5,8 +5,9 @@ import { Controller, useForm } from "react-hook-form";
 
 import { Badge } from "@repo/ui/components/ui/badge";
 import { Button } from "@repo/ui/components/ui/button";
-import { DialogClose } from "@repo/ui/components/ui/dialog";
+import { DialogClose, DialogFooter } from "@repo/ui/components/ui/dialog";
 import { RadioGroup, RadioGroupItem } from "@repo/ui/components/ui/radio-group";
+import { ScrollArea } from "@repo/ui/components/ui/scroll-area";
 import { Textarea } from "@repo/ui/components/ui/textarea";
 import { cn } from "@repo/ui/lib/utils";
 
@@ -61,10 +62,10 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
   });
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex gap-6">
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 min-h-0">
+      <div className="flex gap-6 flex-1 min-h-0">
         {/* Left: prompt textarea */}
-        <div className="flex flex-1 flex-col gap-2">
+        <div className="flex flex-1 flex-col gap-2 overflow-hidden">
           <div>
             <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Prompt
@@ -76,7 +77,7 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
           <Textarea
             {...register("prompt")}
             aria-label="Prompt"
-            className="min-h-[300px] flex-1 resize-none font-mono text-sm"
+            className="min-h-[300px] flex-1 resize-none font-mono text-sm [field-sizing:normal]"
           />
           {errors.prompt && (
             <p className="text-xs text-destructive">{errors.prompt.message}</p>
@@ -84,10 +85,11 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
         </div>
 
         {/* Vertical divider */}
-        <div className="w-px bg-border" />
+        <div className="w-px shrink-0 bg-border" />
 
         {/* Right panel */}
-        <div className="flex w-72 flex-col gap-6 overflow-y-auto">
+        <ScrollArea className="w-72 shrink-0">
+          <div className="flex flex-col gap-6">
           {/* Model picker */}
           <div className="flex flex-col gap-2">
             <div>
@@ -192,10 +194,11 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
             })}
           </div>
         </div>
+        </ScrollArea>
       </div>
 
       {/* Footer */}
-      <div className="-mx-4 -mb-4 mt-4 flex items-center justify-between rounded-b-xl border-t bg-muted/50 px-4 py-3">
+      <DialogFooter className="mt-4 shrink-0 flex-row items-center justify-between py-3">
         <Button type="button" variant="ghost" className="text-primary" onClick={() => reset(defaultValues)}>
           Reset to default
         </Button>
@@ -207,7 +210,7 @@ export function EditPromptForm({ onSubmit }: EditPromptFormProps) {
           </DialogClose>
           <Button type="submit">Save prompt</Button>
         </div>
-      </div>
+      </DialogFooter>
     </form>
   );
 }
