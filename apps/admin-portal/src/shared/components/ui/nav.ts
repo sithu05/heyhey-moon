@@ -46,8 +46,20 @@ export const mainMenu: NavGroup = {
 export const favorites: NavGroup = {
   label: "Favorite",
   items: [
-    { label: "Logic Wireless Mouse", href: "/favorites/logic-wireless-mouse", icon: StarIcon },
-    { label: "PS Controller", href: "/favorites/ps-controller", icon: StarIcon },
-    { label: "Ximi Keyboard", href: "/favorites/ximi-keyboard", icon: StarIcon },
+    {
+      label: "Logic Wireless Mouse",
+      href: "/favorites/logic-wireless-mouse",
+      icon: StarIcon,
+    },
+    {
+      label: "PS Controller",
+      href: "/favorites/ps-controller",
+      icon: StarIcon,
+    },
+    {
+      label: "Ximi Keyboard",
+      href: "/favorites/ximi-keyboard",
+      icon: StarIcon,
+    },
   ],
 };

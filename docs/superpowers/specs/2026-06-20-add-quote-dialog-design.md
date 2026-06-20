@@ -35,16 +35,19 @@ This mirrors the existing `edit-prompt-dialog/` decomposition exactly.
 
 ### Dialog Shell (`dialog.tsx`)
 
-- **Controlled open state** via `useState(false)` on the parent quotes page.
+- **Self-contained open state** via `useState(false)` inside `dialog.tsx` (same pattern as `EditPromptDialog`).
 - `Dialog open={open} onOpenChange={setOpen}`.
-- `DialogTrigger asChild` wraps the page-level trigger button.
+- `DialogTrigger asChild` wraps the trigger button (`PlusIcon` + "Add quote").
 - `DialogContent size="lg"` — same max-width (`sm:max-w-4xl`) and height constraint (`max-h-[calc(100vh-80px)] overflow-hidden`) as `EditPromptDialog`.
 - **Custom header row** inside `DialogHeader`:
-  - Rounded square icon container with `bg-primary` (`Plus` icon).
+  - Rounded square icon container with `bg-primary text-primary-foreground` (`Plus` icon).
   - Title: "Add a quote"
   - Subtitle: "Enter the quote — AI assigns the attributes for you."
 - **Conditional form mount**: `{open && <AddQuoteForm onSubmit={handleSubmit} onEditPrompt={handleEditPrompt} />}` so `useForm` resets cleanly on re-open (same pattern as `EditPromptDialog`).
 - The form body is wrapped in a scrollable container (`overflow-y-auto` or `ScrollArea`) so the sticky footer never gets pushed off-screen.
+- **Internal handlers** (defined in `dialog.tsx`):
+  - `handleSubmit(values)`: calls the `onSubmit` prop with the form values, then `setOpen(false)`.
+  - `handleEditPrompt()`: calls the optional `onEditPrompt` prop, then `setOpen(false)`.
 
 ### Form Fields (`form.tsx`)
 
@@ -117,21 +120,40 @@ export type AddQuoteFormValues = z.infer<typeof addQuoteSchema>;
 
 ### Callback Props
 
-| Prop | Type | Required | Description |
-|------|------|----------|-------------|
-| `onSubmit` | `(values: AddQuoteFormValues) => void \| Promise<void>` | Yes | Called with validated values when "Classify with AI" is pressed. |
-| `onEditPrompt` | `() => void` | No | Called when "Edit prompt" link is clicked. Parent uses this to open `EditPromptDialog`. |
+| Prop           | Type                                                    | Required | Description                                                                             |
+| -------------- | ------------------------------------------------------- | -------- | --------------------------------------------------------------------------------------- |
+| `onSubmit`     | `(values: AddQuoteFormValues) => void \| Promise<void>` | Yes      | Called with validated values when "Classify with AI" is pressed.                        |
+| `onEditPrompt` | `() => void`                                            | No       | Called when "Edit prompt" link is clicked. Parent uses this to open `EditPromptDialog`. |
 
 ---
 
 ## 5. Page Integration
 
-In `app/(app)/quotes/page.tsx`:
+Replace the existing "Add quote" `<Button>` in `app/(app)/quotes/page.tsx` with `<AddQuoteDialog />`.
 
-- Add `const [addOpen, setAddOpen] = useState(false)`.
-- Place `<AddQuoteDialog open={addOpen} onOpenChange={setAddOpen} onSubmit={handleAddQuote} onEditPrompt={handleEditPrompt} />` alongside the existing `EditPromptDialog`.
-- `handleAddQuote` receives form values (frontend-only: currently a no-op or console log).
-- `handleEditPrompt` opens the existing `EditPromptDialog` state.
+Make `EditPromptDialog` optionally controlled so the page can open it programmatically from `AddQuoteDialog`:
+
+- Add optional `open?: boolean` and `onOpenChange?: (open: boolean) => void` props to `EditPromptDialog`.
+- If absent, fall back to internal `useState(false)` (backward compatible).
+
+Updated page snippet:
+
+```tsx
+const [editOpen, setEditOpen] = useState(false);
+
+return (
+  <div className="flex items-center gap-3.5">
+    <EditPromptDialog open={editOpen} onOpenChange={setEditOpen} />
+    <AddQuoteDialog
+      onSubmit={handleAddQuote}
+      onEditPrompt={() => setEditOpen(true)}
+    />
+  </div>
+);
+```
+
+- `handleAddQuote(values)` receives the validated form values. Frontend-only: currently a no-op or `console.log`.
+- `AddQuoteDialog` internally calls `setOpen(false)` after both `onSubmit` and `onEditPrompt`, so it closes itself.
 
 ---
 

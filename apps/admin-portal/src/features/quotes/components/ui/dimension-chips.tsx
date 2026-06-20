@@ -5,7 +5,11 @@ import { cn } from "@repo/ui/lib/utils";
 
 import { DIMENSION_ORDER, DIMENSIONS, type QuoteAttributes } from "../../types";
 
-export function DimensionChips({ attributes }: { attributes: QuoteAttributes }) {
+export function DimensionChips({
+  attributes,
+}: {
+  attributes: QuoteAttributes;
+}) {
   return (
     <div className="flex flex-wrap gap-1.5">
       {DIMENSION_ORDER.flatMap((key) => {
@@ -20,7 +24,12 @@ export function DimensionChips({ attributes }: { attributes: QuoteAttributes }) 
               DIMENSIONS[key].chipClassName,
             )}
           >
-            <span className={cn("size-1.5 rounded-full", DIMENSIONS[key].dotClassName)} />
+            <span
+              className={cn(
+                "size-1.5 rounded-full",
+                DIMENSIONS[key].dotClassName,
+              )}
+            />
             {value}
           </Badge>
         ));

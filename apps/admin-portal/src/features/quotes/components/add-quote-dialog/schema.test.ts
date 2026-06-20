@@ -25,7 +25,7 @@ describe("addQuoteSchema", () => {
   });
 
   it("rejects an empty quote", () => {
-    const result = addQuoteSchema.safeParse({ ...defaultValues, quote: "" });
+    const result = addQuoteSchema.safeParse(defaultValues);
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.flatten().fieldErrors.quote).toContain(
@@ -46,7 +46,7 @@ describe("addQuoteSchema", () => {
 
   it("rejects an invalid language value", () => {
     const result = addQuoteSchema.safeParse({
-      ...defaultValues,
+      quote: "Valid quote text",
       language: "fr",
     });
     expect(result.success).toBe(false);

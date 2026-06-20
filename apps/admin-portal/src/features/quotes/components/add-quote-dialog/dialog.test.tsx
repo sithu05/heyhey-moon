@@ -40,7 +40,8 @@ describe("AddQuoteDialog", () => {
 
   it("submitting closes the dialog", async () => {
     const user = userEvent.setup();
-    render(<AddQuoteDialog onSubmit={vi.fn()} />);
+    const handleSubmit = vi.fn();
+    render(<AddQuoteDialog onSubmit={handleSubmit} />);
     await user.click(screen.getByRole("button", { name: /add quote/i }));
     await user.type(
       screen.getByRole("textbox", { name: /quote/i }),
@@ -50,6 +51,18 @@ describe("AddQuoteDialog", () => {
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
+    expect(handleSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ quote: "Test quote" }),
+    );
+  });
+
+  it("calls onEditPrompt when edit prompt is clicked within the dialog", async () => {
+    const user = userEvent.setup();
+    const handleEditPrompt = vi.fn();
+    render(<AddQuoteDialog onSubmit={vi.fn()} onEditPrompt={handleEditPrompt} />);
+    await user.click(screen.getByRole("button", { name: /add quote/i }));
+    await user.click(screen.getByRole("button", { name: /edit prompt/i }));
+    expect(handleEditPrompt).toHaveBeenCalled();
   });
 
   it("re-opening the dialog resets the form to defaults", async () => {

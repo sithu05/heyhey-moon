@@ -4,7 +4,15 @@ export const DIMENSION_VALUES: Record<DimensionKey, string[]> = {
   mindset: ["Growth", "Fixed"],
   worldview: ["Stoic", "Optimistic", "Realist"],
   motivation: ["Intrinsic", "Extrinsic"],
-  tone: ["Energizing", "Calming", "Reflective", "Urgent", "Tender", "Resolute", "Empowering"],
+  tone: [
+    "Energizing",
+    "Calming",
+    "Reflective",
+    "Urgent",
+    "Tender",
+    "Resolute",
+    "Empowering",
+  ],
   theme: [
     "Resilience",
     "Discipline",

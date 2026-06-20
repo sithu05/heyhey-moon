@@ -20,26 +20,28 @@
 
 ## File Structure
 
-| Path | Responsbility |
-|------|---------------|
-| `apps/admin-portal/src/features/quotes/components/edit-prompt-dialog/dialog.tsx` | Refactor to add optional `open`/`onOpenChange` props (backward compatible) |
-| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/schema.ts` | Zod schema, default values, exported type |
-| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/schema.test.ts` | Zod schema validation matrix (7 tests) |
-| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/form.tsx` | AddQuoteForm: RHF, all fields, banner, footer actions |
-| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/form.test.tsx` | Field rendering, language selection, validation errors, submit callback, edit-prompt callback (11 tests) |
-| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/dialog.tsx` | AddQuoteDialog: self-contained state, trigger, header, conditional form mount |
-| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/index.ts` | Barrel export: `AddQuoteDialog` |
-| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/dialog.test.tsx` | Trigger, open/close, submit closure, re-open reset (6 tests) |
-| `apps/admin-portal/src/app/(app)/quotes/page.tsx` | Make client component, replace "Add quote" button with `<AddQuoteDialog>`; control `EditPromptDialog` open state |
+| Path                                                                                | Responsbility                                                                                                    |
+| ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| `apps/admin-portal/src/features/quotes/components/edit-prompt-dialog/dialog.tsx`    | Refactor to add optional `open`/`onOpenChange` props (backward compatible)                                       |
+| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/schema.ts`       | Zod schema, default values, exported type                                                                        |
+| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/schema.test.ts`  | Zod schema validation matrix (7 tests)                                                                           |
+| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/form.tsx`        | AddQuoteForm: RHF, all fields, banner, footer actions                                                            |
+| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/form.test.tsx`   | Field rendering, language selection, validation errors, submit callback, edit-prompt callback (11 tests)         |
+| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/dialog.tsx`      | AddQuoteDialog: self-contained state, trigger, header, conditional form mount                                    |
+| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/index.ts`        | Barrel export: `AddQuoteDialog`                                                                                  |
+| `apps/admin-portal/src/features/quotes/components/add-quote-dialog/dialog.test.tsx` | Trigger, open/close, submit closure, re-open reset (6 tests)                                                     |
+| `apps/admin-portal/src/app/(app)/quotes/page.tsx`                                   | Make client component, replace "Add quote" button with `<AddQuoteDialog>`; control `EditPromptDialog` open state |
 
 ---
 
 ### Task 1: Make EditPromptDialog optionally controlled
 
 **Files:**
+
 - Modify: `apps/admin-portal/src/features/quotes/components/edit-prompt-dialog/dialog.tsx`
 
 **Interfaces:**
+
 - Consumes: existing `Dialog`, `useState` from React.
 - Produces: `EditPromptDialog` now accepts optional `open?: boolean` and `onOpenChange?: (open: boolean) => void` props. When absent, falls back to internal `useState(false)` (backward compatible).
 
@@ -133,10 +135,12 @@ git commit -m "refactor(edit-prompt-dialog): add optional controlled open state"
 ### Task 2: Create add-quote-schema and tests
 
 **Files:**
+
 - Create: `apps/admin-portal/src/features/quotes/components/add-quote-dialog/schema.ts`
 - Create: `apps/admin-portal/src/features/quotes/components/add-quote-dialog/schema.test.ts`
 
 **Interfaces:**
+
 - Consumes: `z` from `zod`.
 - Produces: `addQuoteSchema`, `AddQuoteFormValues`, `defaultValues`.
 
@@ -186,7 +190,10 @@ describe("addQuoteSchema", () => {
   });
 
   it("rejects an invalid language value", () => {
-    const result = addQuoteSchema.safeParse({ ...defaultValues, language: "fr" });
+    const result = addQuoteSchema.safeParse({
+      ...defaultValues,
+      language: "fr",
+    });
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.error.flatten().fieldErrors.language).toBeDefined();
@@ -263,10 +270,12 @@ git commit -m "feat(add-quote-dialog): add Zod schema with tests"
 ### Task 3: Create AddQuoteForm component and tests
 
 **Files:**
+
 - Create: `apps/admin-portal/src/features/quotes/components/add-quote-dialog/form.tsx`
 - Create: `apps/admin-portal/src/features/quotes/components/add-quote-dialog/form.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `addQuoteSchema`, `defaultValues`, `AddQuoteFormValues` from `./schema`.
 - Consumes: `@repo/ui` components — `Button`, `DialogClose`, `DialogFooter`, `Input`, `Textarea`.
 - Consumes: `SparklesIcon` from `lucide-react`.
@@ -312,21 +321,31 @@ describe("AddQuoteForm", () => {
 
   it("renders author and source inputs", () => {
     render(<FormWrapper />);
-    expect(screen.getByRole("textbox", { name: /author/i })).toBeInTheDocument();
-    expect(screen.getByRole("textbox", { name: /source/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: /author/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: /source/i }),
+    ).toBeInTheDocument();
   });
 
   it("renders language buttons", () => {
     render(<FormWrapper />);
-    expect(screen.getByRole("button", { name: /en english/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /en english/i }),
+    ).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /th/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /my/i })).toBeInTheDocument();
   });
 
   it("renders context textarea and find context button", () => {
     render(<FormWrapper />);
-    expect(screen.getByRole("textbox", { name: /context/i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /find context/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: /context/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /find context/i }),
+    ).toBeInTheDocument();
   });
 
   it("shows editing prompt banner when onEditPrompt is provided", () => {
@@ -334,7 +353,9 @@ describe("AddQuoteForm", () => {
     expect(
       screen.getByText(/tagged automatically with claude sonnet/i),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /edit prompt/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /edit prompt/i }),
+    ).toBeInTheDocument();
   });
 
   it("hides editing prompt banner when onEditPrompt is absent", () => {
@@ -347,7 +368,10 @@ describe("AddQuoteForm", () => {
     const handleSubmit = vi.fn();
     render(<FormWrapper onSubmit={handleSubmit} />);
 
-    await user.type(screen.getByRole("textbox", { name: /quote/i }), "Quote text.");
+    await user.type(
+      screen.getByRole("textbox", { name: /quote/i }),
+      "Quote text.",
+    );
     await user.click(screen.getByRole("button", { name: /classify with ai/i }));
 
     await waitFor(() => expect(handleSubmit).toHaveBeenCalled());
@@ -361,7 +385,10 @@ describe("AddQuoteForm", () => {
     const handleSubmit = vi.fn();
     render(<FormWrapper onSubmit={handleSubmit} />);
 
-    await user.type(screen.getByRole("textbox", { name: /quote/i }), "A great quote.");
+    await user.type(
+      screen.getByRole("textbox", { name: /quote/i }),
+      "A great quote.",
+    );
     await user.click(screen.getByRole("button", { name: /th/i }));
     await user.click(screen.getByRole("button", { name: /classify with ai/i }));
 
@@ -376,8 +403,14 @@ describe("AddQuoteForm", () => {
     const handleSubmit = vi.fn();
     render(<FormWrapper onSubmit={handleSubmit} />);
 
-    await user.type(screen.getByRole("textbox", { name: /quote/i }), "A great quote.");
-    await user.type(screen.getByRole("textbox", { name: /author/i }), "Test Author");
+    await user.type(
+      screen.getByRole("textbox", { name: /quote/i }),
+      "A great quote.",
+    );
+    await user.type(
+      screen.getByRole("textbox", { name: /author/i }),
+      "Test Author",
+    );
     await user.click(screen.getByRole("button", { name: /classify with ai/i }));
 
     await waitFor(() => expect(handleSubmit).toHaveBeenCalled());
@@ -439,7 +472,11 @@ import { DialogClose, DialogFooter } from "@repo/ui/components/ui/dialog";
 import { Input } from "@repo/ui/components/ui/input";
 import { Textarea } from "@repo/ui/components/ui/textarea";
 
-import { addQuoteSchema, defaultValues, type AddQuoteFormValues } from "./schema";
+import {
+  addQuoteSchema,
+  defaultValues,
+  type AddQuoteFormValues,
+} from "./schema";
 
 const LANGUAGES = [
   { value: "en" as const, code: "EN", name: "English" },
@@ -467,7 +504,10 @@ export function AddQuoteForm({ onSubmit, onEditPrompt }: AddQuoteFormProps) {
   const selectedLanguage = watch("language");
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 min-h-0">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col flex-1 min-h-0"
+    >
       <div className="flex-1 overflow-y-auto min-h-0 space-y-4">
         {/* QUOTE */}
         <div className="space-y-2">
@@ -566,7 +606,8 @@ export function AddQuoteForm({ onSubmit, onEditPrompt }: AddQuoteFormProps) {
           <div className="rounded-lg bg-muted/50 p-3 flex items-center gap-3">
             <SparklesIcon className="size-4 text-muted-foreground shrink-0" />
             <p className="text-xs text-muted-foreground flex-1">
-              Tagged automatically with Claude Sonnet 4.5 using your saved prompt.
+              Tagged automatically with Claude Sonnet 4.5 using your saved
+              prompt.
             </p>
             <Button
               type="button"
@@ -614,11 +655,13 @@ git commit -m "feat(add-quote-dialog): add AddQuoteForm with fields and tests"
 ### Task 4: Create AddQuoteDialog shell and tests
 
 **Files:**
+
 - Create: `apps/admin-portal/src/features/quotes/components/add-quote-dialog/dialog.tsx`
 - Create: `apps/admin-portal/src/features/quotes/components/add-quote-dialog/index.ts`
 - Create: `apps/admin-portal/src/features/quotes/components/add-quote-dialog/dialog.test.tsx`
 
 **Interfaces:**
+
 - Consumes: `AddQuoteForm` from `./form`, `AddQuoteFormValues` from `./schema`.
 - Consumes: `@repo/ui` components — `Button`, `Dialog`, `DialogContent`, `DialogDescription`, `DialogHeader`, `DialogTitle`, `DialogTrigger`.
 - Consumes: `PlusIcon` from `lucide-react`.
@@ -643,7 +686,9 @@ afterEach(cleanup);
 describe("AddQuoteDialog", () => {
   it("renders the trigger button", () => {
     render(<AddQuoteDialog onSubmit={vi.fn()} />);
-    expect(screen.getByRole("button", { name: /add quote/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /add quote/i }),
+    ).toBeInTheDocument();
   });
 
   it("dialog is closed by default", () => {
@@ -673,7 +718,10 @@ describe("AddQuoteDialog", () => {
     const user = userEvent.setup();
     render(<AddQuoteDialog onSubmit={vi.fn()} />);
     await user.click(screen.getByRole("button", { name: /add quote/i }));
-    await user.type(screen.getByRole("textbox", { name: /quote/i }), "Test quote");
+    await user.type(
+      screen.getByRole("textbox", { name: /quote/i }),
+      "Test quote",
+    );
     await user.click(screen.getByRole("button", { name: /classify with ai/i }));
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -690,7 +738,9 @@ describe("AddQuoteDialog", () => {
     await user.type(quoteTextarea, "custom quote text");
 
     await user.click(screen.getByRole("button", { name: /cancel/i }));
-    await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+    );
 
     await user.click(screen.getByRole("button", { name: /add quote/i }));
     expect(screen.getByRole("textbox", { name: /quote/i })).toHaveValue(
@@ -736,7 +786,10 @@ type AddQuoteDialogProps = {
   onEditPrompt?: () => void;
 };
 
-export function AddQuoteDialog({ onSubmit, onEditPrompt }: AddQuoteDialogProps) {
+export function AddQuoteDialog({
+  onSubmit,
+  onEditPrompt,
+}: AddQuoteDialogProps) {
   const [open, setOpen] = useState(false);
 
   const handleSubmit = (values: AddQuoteFormValues) => {
@@ -809,9 +862,11 @@ git commit -m "feat(add-quote-dialog): add dialog shell with tests and barrel ex
 ### Task 5: Wire into quotes page
 
 **Files:**
+
 - Modify: `apps/admin-portal/src/app/(app)/quotes/page.tsx`
 
 **Interfaces:**
+
 - Consumes: `AddQuoteDialog` from `@/features/quotes/components/add-quote-dialog`.
 - Consumes: `EditPromptDialog` (now optionally controlled) from `@/features/quotes/components/edit-prompt-dialog`.
 - Produces: quotes page renders both dialogs with coordinated open state.
@@ -928,6 +983,7 @@ git commit -m "chore: fix lint/type issues for add-quote-dialog"
 ## Self-Review Checklist
 
 **1. Spec coverage:**
+
 - Frontend-only dialog shell with self-contained state → Task 4 ✅
 - Quote, Author, Source, Language, Context fields → Task 3 ✅
 - Language pill buttons (EN/TH/MY) → Task 3 ✅
@@ -947,6 +1003,7 @@ git commit -m "chore: fix lint/type issues for add-quote-dialog"
 **2. Placeholder scan:** No TBD/TODO/"implement later"/"fill in details". All steps contain complete code and exact commands. ✅
 
 **3. Type consistency:**
+
 - `AddQuoteFormValues` used consistently across schema, form, and dialog. ✅
 - `onSubmit` signature matches in form props (`(values: AddQuoteFormValues) => void`) and dialog props. ✅
 - `onEditPrompt` optional in form and dialog. ✅

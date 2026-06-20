@@ -23,17 +23,23 @@ function FormWrapper({ onSubmit = vi.fn() }: { onSubmit?: () => void }) {
 describe("EditPromptForm", () => {
   it("renders the prompt textarea", () => {
     render(<FormWrapper />);
-    expect(screen.getByRole("textbox", { name: /prompt/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: /prompt/i }),
+    ).toBeInTheDocument();
   });
 
   it("textarea shows the default prompt text", () => {
     render(<FormWrapper />);
-    expect(screen.getByRole("textbox", { name: /prompt/i })).toHaveValue(defaultValues.prompt);
+    expect(screen.getByRole("textbox", { name: /prompt/i })).toHaveValue(
+      defaultValues.prompt,
+    );
   });
 
   it("Claude Sonnet 4.5 radio is selected by default", () => {
     render(<FormWrapper />);
-    expect(screen.getByRole("radio", { name: /claude sonnet 4\.5/i })).toBeChecked();
+    expect(
+      screen.getByRole("radio", { name: /claude sonnet 4\.5/i }),
+    ).toBeChecked();
   });
 
   it("clicking a different model selects it", async () => {
@@ -41,7 +47,9 @@ describe("EditPromptForm", () => {
     render(<FormWrapper />);
     await user.click(screen.getByRole("radio", { name: /gpt-4o/i }));
     expect(screen.getByRole("radio", { name: /gpt-4o/i })).toBeChecked();
-    expect(screen.getByRole("radio", { name: /claude sonnet 4\.5/i })).not.toBeChecked();
+    expect(
+      screen.getByRole("radio", { name: /claude sonnet 4\.5/i }),
+    ).not.toBeChecked();
   });
 
   it("calls onSubmit on valid submit", async () => {
@@ -68,16 +76,23 @@ describe("EditPromptForm", () => {
     const user = userEvent.setup();
     render(<FormWrapper />);
     await user.clear(screen.getByRole("textbox", { name: /prompt/i }));
-    await user.type(screen.getByRole("textbox", { name: /prompt/i }), "custom prompt");
+    await user.type(
+      screen.getByRole("textbox", { name: /prompt/i }),
+      "custom prompt",
+    );
     await user.click(screen.getByRole("button", { name: /reset to default/i }));
-    expect(screen.getByRole("textbox", { name: /prompt/i })).toHaveValue(defaultValues.prompt);
+    expect(screen.getByRole("textbox", { name: /prompt/i })).toHaveValue(
+      defaultValues.prompt,
+    );
   });
 
   it("renders all 7 dimension section labels", () => {
     render(<FormWrapper />);
     for (const key of DIMENSION_ORDER) {
       expect(
-        screen.getByText(DIMENSIONS[key].label, { selector: "[data-dimension-label]" }),
+        screen.getByText(DIMENSIONS[key].label, {
+          selector: "[data-dimension-label]",
+        }),
       ).toBeInTheDocument();
     }
   });
