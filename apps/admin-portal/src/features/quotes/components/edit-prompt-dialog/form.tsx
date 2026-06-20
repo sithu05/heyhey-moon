@@ -12,12 +12,9 @@ import { ScrollArea } from "@repo/ui/components/ui/scroll-area";
 import { Textarea } from "@repo/ui/components/ui/textarea";
 import { cn } from "@repo/ui/lib/utils";
 
-import {
-  defaultValues,
-  editPromptSchema,
-  MODELS,
-  type EditPromptFormValues,
-} from "./schema";
+import { defaultValues } from "./constants";
+import { editPromptSchema, MODELS } from "./schema";
+import type { EditPromptFormValues } from "./types";
 import { DIMENSION_VALUES } from "../../constants";
 import { DIMENSION_ORDER, DIMENSIONS } from "../../types";
 

@@ -4,8 +4,8 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { Dialog } from "@repo/ui/components/ui/dialog";
 
+import { defaultValues } from "./constants";
 import { EditPromptForm } from "./form";
-import { defaultValues } from "./schema";
 import { DIMENSION_ORDER, DIMENSIONS } from "../../types";
 
 afterEach(cleanup);
