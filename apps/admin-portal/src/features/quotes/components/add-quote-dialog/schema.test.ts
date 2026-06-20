@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { addQuoteSchema, defaultValues } from "./schema";
+import { defaultValues } from "./constants";
+import { addQuoteSchema } from "./schema";
 
 describe("addQuoteSchema", () => {
   it("has default values with all expected keys", () => {

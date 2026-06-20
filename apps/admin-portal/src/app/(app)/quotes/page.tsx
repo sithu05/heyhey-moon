@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 import { AddQuoteDialog } from "@/features/quotes/components/add-quote-dialog";
 import { EditPromptDialog } from "@/features/quotes/components/edit-prompt-dialog";
 import { DimensionChips } from "@/features/quotes/components/ui/dimension-chips";
@@ -18,8 +14,6 @@ const SAMPLE_ATTRIBUTES: QuoteAttributes = {
 };
 
 export default function Page() {
-  const [editOpen, setEditOpen] = useState(false);
-
   return (
     <div>
       <div className="mb-8 flex items-end justify-between">
@@ -32,13 +26,8 @@ export default function Page() {
         </div>
 
         <div className="flex items-center gap-3.5">
-          <EditPromptDialog open={editOpen} onOpenChange={setEditOpen} />
-          <AddQuoteDialog
-            onSubmit={() => {
-              // no-op: frontend-only
-            }}
-            onEditPrompt={() => setEditOpen(true)}
-          />
+          <EditPromptDialog />
+          <AddQuoteDialog />
         </div>
       </div>
 

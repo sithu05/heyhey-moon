@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { MODELS, defaultValues, editPromptSchema } from "./schema";
+import { defaultValues } from "./constants";
+import { MODELS, editPromptSchema } from "./schema";
 
 describe("editPromptSchema", () => {
   it("accepts the default values", () => {

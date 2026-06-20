@@ -46,10 +46,3 @@ export const editPromptSchema = z.object({
   prompt: z.string().trim().min(1, "Prompt cannot be empty"),
   model: z.enum(MODELS),
 });
-
-export type EditPromptFormValues = z.infer<typeof editPromptSchema>;
-
-export const defaultValues: EditPromptFormValues = {
-  prompt: DEFAULT_PROMPT,
-  model: "claude-sonnet-4-5",
-};
