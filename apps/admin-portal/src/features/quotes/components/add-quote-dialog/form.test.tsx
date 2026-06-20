@@ -5,20 +5,18 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { Dialog } from "@repo/ui/components/ui/dialog";
 
 import { AddQuoteForm } from "./form";
-import { type AddQuoteFormValues } from "./schema";
+import { type AddQuoteFormValues } from "./types";
 
 afterEach(cleanup);
 
 function FormWrapper({
   onSubmit = vi.fn(),
-  onEditPrompt,
 }: {
   onSubmit?: (values: AddQuoteFormValues) => void;
-  onEditPrompt?: () => void;
 }) {
   return (
     <Dialog open>
-      <AddQuoteForm onSubmit={onSubmit} onEditPrompt={onEditPrompt} />
+      <AddQuoteForm onSubmit={onSubmit} />
     </Dialog>
   );
 }
@@ -42,10 +40,10 @@ describe("AddQuoteForm", () => {
   it("renders language buttons", () => {
     render(<FormWrapper />);
     expect(
-      screen.getByRole("button", { name: /en english/i }),
+      screen.getByRole("radio", { name: /english/i }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /^th /i })).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /my/i })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "ไทย" })).toBeInTheDocument();
+    expect(screen.getByRole("radio", { name: "မြန်မာ" })).toBeInTheDocument();
   });
 
   it("renders context textarea and find context button", () => {
@@ -56,21 +54,6 @@ describe("AddQuoteForm", () => {
     expect(
       screen.getByRole("button", { name: /find context/i }),
     ).toBeInTheDocument();
-  });
-
-  it("shows editing prompt banner when onEditPrompt is provided", () => {
-    render(<FormWrapper onEditPrompt={vi.fn()} />);
-    expect(
-      screen.getByText(/tagged automatically with claude sonnet/i),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /edit prompt/i }),
-    ).toBeInTheDocument();
-  });
-
-  it("hides editing prompt banner when onEditPrompt is absent", () => {
-    render(<FormWrapper />);
-    expect(screen.queryByText(/tagged automatically/i)).not.toBeInTheDocument();
   });
 
   it("defaults language to English", async () => {
@@ -100,7 +83,7 @@ describe("AddQuoteForm", () => {
       screen.getByRole("textbox", { name: /quote/i }),
       "A great quote.",
     );
-    await user.click(screen.getByRole("button", { name: /^th /i }));
+    await user.click(screen.getByRole("radio", { name: "ไทย" }));
     await user.click(screen.getByRole("button", { name: /classify with ai/i }));
 
     await waitFor(() => expect(handleSubmit).toHaveBeenCalled());
@@ -148,14 +131,5 @@ describe("AddQuoteForm", () => {
       expect(screen.getByText("Quote is required")).toBeInTheDocument();
     });
     expect(handleSubmit).not.toHaveBeenCalled();
-  });
-
-  it("calls onEditPrompt when edit prompt button is clicked", async () => {
-    const user = userEvent.setup();
-    const handleEditPrompt = vi.fn();
-    render(<FormWrapper onEditPrompt={handleEditPrompt} />);
-
-    await user.click(screen.getByRole("button", { name: /edit prompt/i }));
-    expect(handleEditPrompt).toHaveBeenCalled();
   });
 });

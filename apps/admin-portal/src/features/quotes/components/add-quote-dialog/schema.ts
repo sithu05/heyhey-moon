@@ -7,13 +7,3 @@ export const addQuoteSchema = z.object({
   language: z.enum(["en", "th", "my"]),
   context: z.string().trim().optional(),
 });
-
-export type AddQuoteFormValues = z.infer<typeof addQuoteSchema>;
-
-export const defaultValues: AddQuoteFormValues = {
-  quote: "",
-  author: "",
-  source: "",
-  language: "en",
-  context: "",
-};
