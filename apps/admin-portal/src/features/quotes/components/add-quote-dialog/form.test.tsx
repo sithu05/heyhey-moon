@@ -1,0 +1,161 @@
+import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { afterEach, describe, expect, it, vi } from "vitest";
+
+import { Dialog } from "@repo/ui/components/ui/dialog";
+
+import { AddQuoteForm } from "./form";
+import { type AddQuoteFormValues } from "./schema";
+
+afterEach(cleanup);
+
+function FormWrapper({
+  onSubmit = vi.fn(),
+  onEditPrompt,
+}: {
+  onSubmit?: (values: AddQuoteFormValues) => void;
+  onEditPrompt?: () => void;
+}) {
+  return (
+    <Dialog open>
+      <AddQuoteForm onSubmit={onSubmit} onEditPrompt={onEditPrompt} />
+    </Dialog>
+  );
+}
+
+describe("AddQuoteForm", () => {
+  it("renders the quote textarea", () => {
+    render(<FormWrapper />);
+    expect(screen.getByRole("textbox", { name: /quote/i })).toBeInTheDocument();
+  });
+
+  it("renders author and source inputs", () => {
+    render(<FormWrapper />);
+    expect(
+      screen.getByRole("textbox", { name: /author/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: /source/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("renders language buttons", () => {
+    render(<FormWrapper />);
+    expect(
+      screen.getByRole("button", { name: /en english/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^th /i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /my/i })).toBeInTheDocument();
+  });
+
+  it("renders context textarea and find context button", () => {
+    render(<FormWrapper />);
+    expect(
+      screen.getByRole("textbox", { name: /context/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /find context/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("shows editing prompt banner when onEditPrompt is provided", () => {
+    render(<FormWrapper onEditPrompt={vi.fn()} />);
+    expect(
+      screen.getByText(/tagged automatically with claude sonnet/i),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /edit prompt/i }),
+    ).toBeInTheDocument();
+  });
+
+  it("hides editing prompt banner when onEditPrompt is absent", () => {
+    render(<FormWrapper />);
+    expect(screen.queryByText(/tagged automatically/i)).not.toBeInTheDocument();
+  });
+
+  it("defaults language to English", async () => {
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+    render(<FormWrapper onSubmit={handleSubmit} />);
+
+    await user.type(
+      screen.getByRole("textbox", { name: /quote/i }),
+      "Quote text.",
+    );
+    await user.click(screen.getByRole("button", { name: /classify with ai/i }));
+
+    await waitFor(() => expect(handleSubmit).toHaveBeenCalled());
+    expect(handleSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ language: "en" }),
+      expect.anything(),
+    );
+  });
+
+  it("submits with the selected language", async () => {
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+    render(<FormWrapper onSubmit={handleSubmit} />);
+
+    await user.type(
+      screen.getByRole("textbox", { name: /quote/i }),
+      "A great quote.",
+    );
+    await user.click(screen.getByRole("button", { name: /^th /i }));
+    await user.click(screen.getByRole("button", { name: /classify with ai/i }));
+
+    await waitFor(() => expect(handleSubmit).toHaveBeenCalled());
+    expect(handleSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({ language: "th" }),
+      expect.anything(),
+    );
+  });
+
+  it("calls onSubmit with valid data", async () => {
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+    render(<FormWrapper onSubmit={handleSubmit} />);
+
+    await user.type(
+      screen.getByRole("textbox", { name: /quote/i }),
+      "A great quote.",
+    );
+    await user.type(
+      screen.getByRole("textbox", { name: /author/i }),
+      "Test Author",
+    );
+    await user.click(screen.getByRole("button", { name: /classify with ai/i }));
+
+    await waitFor(() => expect(handleSubmit).toHaveBeenCalled());
+    expect(handleSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        quote: "A great quote.",
+        author: "Test Author",
+        language: "en",
+      }),
+      expect.anything(),
+    );
+  });
+
+  it("shows error and does not call onSubmit when quote is empty", async () => {
+    const user = userEvent.setup();
+    const handleSubmit = vi.fn();
+    render(<FormWrapper onSubmit={handleSubmit} />);
+
+    await user.clear(screen.getByRole("textbox", { name: /quote/i }));
+    await user.click(screen.getByRole("button", { name: /classify with ai/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Quote is required")).toBeInTheDocument();
+    });
+    expect(handleSubmit).not.toHaveBeenCalled();
+  });
+
+  it("calls onEditPrompt when edit prompt button is clicked", async () => {
+    const user = userEvent.setup();
+    const handleEditPrompt = vi.fn();
+    render(<FormWrapper onEditPrompt={handleEditPrompt} />);
+
+    await user.click(screen.getByRole("button", { name: /edit prompt/i }));
+    expect(handleEditPrompt).toHaveBeenCalled();
+  });
+});
